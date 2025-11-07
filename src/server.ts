@@ -7,6 +7,6 @@ import { app } from "./app";
     await app.start(port);
     app.logger.info(` app is running! ${port}`);
   } catch (error) {
-    app.logger.info(`app is not running! :c ${error} `);
+    app.logger.error(`app is not running! :c ${error} `);
   }
 })();
