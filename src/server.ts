@@ -8,5 +8,6 @@ import { app } from "./app";
     app.logger.info(` app is running! ${port}`);
   } catch (error) {
     app.logger.error(`app is not running! :c ${error} `);
+    process.exit(1)
   }
 })();
