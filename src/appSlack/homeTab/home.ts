@@ -1,13 +1,7 @@
-/*
-export interface AppHomeOpenedEvent {
-    type: 'app_home_opened';
-    user: string;
-    channel: string;
-    tab?: 'home' | 'messages';
-    view?: View;
-    event_ts: string;
-}
-    */
+import { app } from "../../app";
+import dotenv from "dotenv"
+
+dotenv.config()
 
 app.event("app_home_opened", async ({ event, client }) => {
    try {
@@ -19,7 +13,7 @@ app.event("app_home_opened", async ({ event, client }) => {
       
       {
         type: "image",
-        image_url: "https://", 
+        image_url: "", 
         alt_text: "Banner principal",
       },
       
@@ -27,7 +21,7 @@ app.event("app_home_opened", async ({ event, client }) => {
         type: "header",
         text: {
           type: "plain_text",
-          text:  `UM DIA SAI`, 
+          text:  `:tuna-bot: `, //
           emoji: true,
         },
       },
@@ -42,4 +36,6 @@ app.event("app_home_opened", async ({ event, client }) => {
     console.error("Erro ao atualizar Home Tab:", err);
   }
 });
+
+
 

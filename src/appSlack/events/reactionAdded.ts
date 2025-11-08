@@ -1,60 +1,15 @@
 
 import { SlackEventMiddlewareArgs } from "@slack/bolt"
-import { createModal } from "../modalSlack/modal";
-import  {app}  from "../index";
+import { app } from "../../app";
 
-
-
-/*export interface AppMentionEvent {
-    type: 'app_mention';
-    subtype?: string;
-    bot_id?: string;
-    bot_profile?: BotProfile;
-    username?: string;
-    team?: string;
-    user_team?: string;
-    source_team?: string;
-    user_profile?: {
-        name: string;
-        first_name: string;
-        real_name: string;
-        display_name: string;
-        team: string;
-        is_restricted?: boolean;
-        is_ultra_restricted?: boolean;
-        avatar_hash?: string;
-        image_72?: string;
-    };
-    user?: string;
-    text: string;
-    attachments?: MessageAttachment[];
-    blocks?: (KnownBlock | Block)[];
-    files?: {
-        id: string;
-    }[];
-    upload?: boolean;
-    display_as_bot?: boolean;
-    edited?: {
-        user: string;
-        ts: string;
-    };
-    ts: string;
-    channel: string;
-    event_ts: string;
-    thread_ts?: string;
-    client_msg_id?: string;
-}
-    */
-
-type ReactionAddedEvent = SlackEventMiddlewareArgs<"reaction_added">["event"]           //@slack/types
-
+type ReactionAddedEvent = SlackEventMiddlewareArgs<"reaction_added">["event"]   
 
 let ticketCount = 0;
 
-async function registerEvents(app:any) {
-    
 
-app.event("reaction_added", async ({ event, client }) => {    //que tipo é isso ??
+    
+app.event("reaction_added", async ({ event, client }) => { 
+  
   const e = event as ReactionAddedEvent; 
 
   console.log("REACTION ADDED!")
@@ -88,13 +43,12 @@ app.event("reaction_added", async ({ event, client }) => {    //que tipo é isso
           ],
         },
       ],
+
+      
     })
   } catch (error) {
     console.error("Erro ao enviar mensagem:", error)
   }
-})}
+})
 
 
-/*@slack/types → descreve como o Slack te envia os dados.
-
-Suas interfaces → descrevem como você organiza os seus próprios dados.*/
