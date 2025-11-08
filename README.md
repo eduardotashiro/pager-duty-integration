@@ -1,9 +1,9 @@
-## Criação de incidentes a partir de reações na thread 
+## Criação de incidentes Pager duty
 
 > em desenvolvimento 
-
 ```
 ├── src
+│   ├── appPagerDuty
 │   ├── appSlack
 │   │   ├── actions
 │   │   │   └── actions.ts
@@ -11,13 +11,11 @@
 │   │   │   └── reactionAdded.ts
 │   │   ├── homeTab
 │   │   │   └── home.ts
-│   │   ├── modalSlack
-│   │   │   └── modal.ts
-│   │   └── index.ts
-│   ├── controllers
+│   │   └── modalSlack
+│   │       ├── modal.ts
+│   │       └── submit.ts
 │   ├── image
 │   │   └── pagerduty-seeklogo.png
-│   ├── routers
 │   ├── app.ts
 │   └── server.ts
 ├── .gitignore
@@ -27,4 +25,3 @@
 ├── package.json
 └── tsconfig.json
 ```
-
