@@ -1,16 +1,36 @@
 import { app } from "../../app";
 import { ModalView } from "@slack/types";
+import { createIncident } from "../../appPagerDuty/createIncident/createIncident";
+import dotenv from "dotenv";
+dotenv.config();
 
-export function createModal(channel: string, ts: string): ModalView {
-  //quem sabe nao daria boa por parametros para ter modais pré configurados tipo um serviceOptions p incidentes..
+
+export function createModal(channel: string, ts: string,  thread_ts: string,text: string,messageAuthorId: string, placeholderTs: string, ): ModalView {
   return {
     type: "modal",
     callback_id: "incidente_modal",
-    private_metadata: JSON.stringify({ channel, ts }), // contexto da thread
-    title: { type: "plain_text", text: "Pager Duty Demo" },
+    private_metadata: JSON.stringify({ channel, ts ,thread_ts, messageAuthorId, placeholderTs}),
+    title: { type: "plain_text", text: "Tuna Incidentes" },
     submit: { type: "plain_text", text: "Enviar" },
     close: { type: "plain_text", text: "Cancelar" },
     blocks: [
+      {
+        type: "header",
+        text: {
+          type: "plain_text",
+          text: "Criação de Incidentes",
+          emoji: true,
+        },
+      },
+      {
+        type: "input",
+        block_id: "titulo",
+        label: { type: "plain_text", text: "Título" },
+        element: { type: "plain_text_input", action_id: "assunto_input" },
+      },
+      {
+        type: "divider",
+      },
       {
         type: "input",
         block_id: "servico",
@@ -18,68 +38,49 @@ export function createModal(channel: string, ts: string): ModalView {
         element: {
           type: "static_select",
           action_id: "servico_input",
-          option_groups: [
+          options: [
             {
-              label: { type: "plain_text", text: "1 | " },
-              options: [
-                { text: { type: "plain_text", text: "e)" }, value: "1195946" },
-                { text: { type: "plain_text", text: "d)" }, value: "1226508" },
-                { text: { type: "plain_text", text: "u)" }, value: "1244237" },
-                { text: { type: "plain_text", text: "a)" }, value: "1195992" },
-                { text: { type: "plain_text", text: "r)" }, value: "1195993" },
-                { text: { type: "plain_text", text: "d)" }, value: "1195995" },
-                { text: { type: "plain_text", text: "o)" }, value: "1196029" },
-                { text: { type: "plain_text", text: "$)" }, value: "1196022" },
-                { text: { type: "plain_text", text: "t)" }, value: "1196051" },
-                { text: { type: "plain_text", text: "a)" }, value: "1196053" },
-                { text: { type: "plain_text", text: "s)" }, value: "1196048" },
-                { text: { type: "plain_text", text: "h)" }, value: "1344608" },
-                { text: { type: "plain_text", text: "i)" }, value: "1195994" },
-                { text: { type: "plain_text", text: "r)" }, value: "1238553" },
-                { text: { type: "plain_text", text: "o)" }, value: "1196055" },
-              ],
+              text: { type: "plain_text", text: "Anota Aí" },
+              value: "P9Q80RE",
             },
             {
-              label: { type: "plain_text", text: "2 |" },
-              options: [
-                { text: { type: "plain_text", text: "a)" }, value: "1196095" },
-                { text: { type: "plain_text", text: "b)" }, value: "1196113" },
-                { text: { type: "plain_text", text: "c)" }, value: "1196152" },
-                { text: { type: "plain_text", text: "d)" }, value: "1196153" },
-                { text: { type: "plain_text", text: "e)" }, value: "1196154" },
-                { text: { type: "plain_text", text: "f)" }, value: "1196155" },
-              ],
+              text: { type: "plain_text", text: "Console API" },
+              value: "PSKOIES",
             },
             {
-              label: { type: "plain_text", text: "3 |" },
-              options: [
-                { text: { type: "plain_text", text: "a)" }, value: "1196200" },
-                { text: { type: "plain_text", text: "b)" }, value: "1196204" },
-                { text: { type: "plain_text", text: "c)" }, value: "1196211" },
-                { text: { type: "plain_text", text: "d)" }, value: "1196214" },
-                { text: { type: "plain_text", text: "e)" }, value: "1196218" },
-                { text: { type: "plain_text", text: "f)" }, value: "1196220" },
-                { text: { type: "plain_text", text: "g)" }, value: "1196221" },
-              ],
+              text: { type: "plain_text", text: "Console Web" },
+              value: "PJAHA64",
             },
             {
-              label: { type: "plain_text", text: "4 |" },
-              options: [
-                { text: { type: "plain_text", text: "a)" }, value: "1196223" },
-                { text: { type: "plain_text", text: "b)" }, value: "1196224" },
-                { text: { type: "plain_text", text: "c)" }, value: "1196225" },
-                { text: { type: "plain_text", text: "d)" }, value: "1196226" },
-                { text: { type: "plain_text", text: "e)" }, value: "1196228" },
-                { text: { type: "plain_text", text: "f)" }, value: "1196229" },
-                { text: { type: "plain_text", text: "g)" }, value: "1196230" },
-                { text: { type: "plain_text", text: "h)" }, value: "1196232" },
-                { text: { type: "plain_text", text: "i)" }, value: "1196234" },
-                { text: { type: "plain_text", text: "j)" }, value: "1199383" },
-                { text: { type: "plain_text", text: "k"  }, value: "1225228" },
-                { text: { type: "plain_text", text: "l)" }, value: "1225896" },
-                { text: { type: "plain_text", text: "m)" }, value: "1234468" },
-                { text: { type: "plain_text", text: "n)" }, value: "1314886" },
-              ],
+              text: { type: "plain_text", text: "Engine API" },
+              value: "P5TGWBC",
+            },
+            {
+              text: { type: "plain_text", text: "Notifications" },
+              value: "P8RZRP0",
+            },
+            {
+              text: { type: "plain_text", text: "Token API" },
+              value: "PCGAOFE",
+            },
+          ],
+        },
+      },
+      {
+        type: "input",
+        block_id: "prioridade",
+        label: { type: "plain_text", text: "Urgência" },
+        element: {
+          type: "radio_buttons",
+          action_id: "prioridade_input",
+          options: [
+            {
+              text: { type: "plain_text", text: "Baixa" },
+              value: "low",
+            },
+            {
+              text: { type: "plain_text", text: "Alta" },
+              value: "high",
             },
           ],
         },
@@ -89,56 +90,115 @@ export function createModal(channel: string, ts: string): ModalView {
       },
       {
         type: "input",
-        block_id: "assunto",
-        label: { type: "plain_text", text: "Assunto do Incidente" }, //teste
-        element: { type: "plain_text_input", action_id: "assunto_input" },
-      },
-      {
-        type: "divider",
-      },
-      {
-        type: "input",
-        block_id: "descricao", //teste hard code
+        block_id: "descricao",
         label: { type: "plain_text", text: "Descrição do incidente" },
         element: {
           type: "plain_text_input",
           multiline: true,
           action_id: "descricao_input",
+          initial_value: text
         },
       },
     ],
   };
 }
 
+
+
 //submit
+app.view("incidente_modal", async ({ ack, view, client }:{body:any,ack:any,view:any,client:any}) => {
+  await ack()
 
-app.view("incidente_modal", async ({ ack, body, view, client }) => {
-  await ack();
 
-  const user = body.user.id;
+  const titulo = view.state.values.titulo.assunto_input?.value ?? ""
+  const servico =view.state.values.servico.servico_input.selected_option?.value ?? ""
+  const urgencia =view.state.values.prioridade.prioridade_input.selected_option?.value ?? ""
+  const descricao = view.state.values.descricao.descricao_input?.value ?? ""
+ 
+  console.log(`titulo:    ${titulo}`   )
+  console.log(`service:   ${servico}`  )
+  console.log(`descrição: ${descricao}`)
+  console.log(`urgencia:  ${urgencia}` )
 
-  // contexto original da thread
+
+  
   const metadata = JSON.parse(view.private_metadata);
   const channel = metadata.channel;
-  const ts = metadata.ts;
+  const ts = metadata.ts;                 //  Mensagem específica que foi reagida
+  const thread_ts = metadata.thread_ts;  //   Thread raiz (se existir)
+  const messageAuthorId = metadata.messageAuthorId;
+  const placeholderTs = metadata.placeholderTs;
+  //const botMessageTs = metadata.botMessageTs;
 
-  //dados do modal
-  const servico =view.state.values.servico.servico_input.selected_option?.text.text;
-  const assunto = view.state.values.assunto.assunto_input.value;
-  const descricao = view.state.values.descricao.descricao_input.value;
 
-  //pagerduty aqui ?
 
-  await client.chat.update({
-    channel,
-    ts,
-    text: `Incidente criado com sucesso !\n\n*Serviço:* ${servico}\n*Assunto:* ${assunto}\n*Descrição:* ${descricao}`,
-    blocks: [], //
-  });
+ const incident = await createIncident({  //pegar quem resolver futuramente incident.last_status_change_by ?
+  titulo:titulo,
+  servico:{
+    id:servico,
+    type:"service_reference"
+  },
+  descricao:descricao,
+  urgencia:urgencia,
+  channel,
+  ts: ts,               //  msg específica
+  thread_ts: thread_ts //  Thread raiz
+ })
+ 
+ 
 
-  await client.chat.postMessage({
-    channel,
-    thread_ts: ts,
-    text: `salve <@${user}> seu incidente foi registrado com sucesso no PagerDuty!`,
-  });
+await client.chat.update({
+  channel: channel,
+  ts: placeholderTs,
+    text: `Incidente criado com sucesso para <@${messageAuthorId}>!`,
+  blocks: [
+    {
+      type: "header",
+      text: {
+        type: "plain_text",
+        text: "Incidente Criado com Sucesso no :pagerduty-seeklogo:ager Duty !",
+        emoji: true
+      }
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `<@${messageAuthorId}> sua solicitação foi registrada e nossa equipe técnica foi notificada.`
+      }
+    },
+    {
+      type: "section",
+      fields: [
+        {
+          type: "mrkdwn",
+          text: `*Título:* ${titulo}`
+        }
+    
+      ]
+    },
+    {
+      type: "section", 
+      fields: [
+        {
+          type: "mrkdwn",
+          text: `*Prioridade:* ${urgencia === 'high' ? 'Alta' : 'Baixa'}`
+        },
+        {
+          type: "mrkdwn",
+          text: `*Status:* Em andamento`
+        }
+      ]
+    },
+    {
+      type: "context",
+      elements: [
+        {
+          type: "mrkdwn",
+          text: `${new Date().toLocaleString('pt-BR')} | TUNA :cactus:`
+        }
+      ]
+    }
+  ]
 });
+})
