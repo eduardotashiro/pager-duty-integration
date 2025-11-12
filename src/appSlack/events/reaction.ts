@@ -93,6 +93,7 @@ app.event("reaction_added", async ({ event, client }) => {
                 thread_ts: threadOrigin, //   THREAD RAIZ !!!!
                 messageAuthorId: originalMessage.user,
                 placeholderTs: botMessage.ts,
+                text: originalMessage.text || "",
               }),
               style: "primary", //danger ?
             },
