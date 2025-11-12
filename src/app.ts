@@ -1,18 +1,52 @@
-import {App} from "@slack/bolt"
+import { App } from "@slack/bolt";
+import {config} from "./config/env"
 
 
-import dotenv from "dotenv"
-dotenv.config()
+export const app = new App({
+  token: config.slack.botToken,
+  signingSecret: config.slack.signingSecret,
+});                                    
 
-if (!process.env.SLACK_BOT_TOKEN || !process.env.SLACK_SIGNING_SECRET) {
-    console.error(`Deu problema no ENV`)
-}
 
- export const app = new App({
-    token: process.env.SLACK_BOT_TOKEN,
-    signingSecret: process.env.SLACK_SIGNING_SECRET
 
-})
-import "./appSlack/events/reactionAdded";
-import "./appSlack/actions/actions";
-import "./appSlack/homeTab/home";
+
+import "./appSlack/events/reaction"   ;
+import "./appSlack/actions/actions"   ;
+import "./appSlack/homeTab/home"      ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//https://www.youtube.com/watch?v=OpOgksWFods&list=RDOpOgksWFods&start_radio=1
