@@ -1,18 +1,69 @@
-import {App} from "@slack/bolt"
+import { App,ExpressReceiver,LogLevel } from "@slack/bolt";
+import {config} from "./config/env"
+import express from "express";
 
-
-import dotenv from "dotenv"
-dotenv.config()
-
-if (!process.env.SLACK_BOT_TOKEN || !process.env.SLACK_SIGNING_SECRET) {
-    console.error(`Deu problema no ENV`)
-}
-
- export const app = new App({
-    token: process.env.SLACK_BOT_TOKEN,
-    signingSecret: process.env.SLACK_SIGNING_SECRET
-
+//https://github.com/slackapi/bolt-js/blob/main/examples/oauth-express-receiver/app.js
+//O PagerDuty espera uma resposta 2xx em até 5 segundos para webhooks genéricos e em até 16 segundos para webhooks gerados a partir de ações de incidentes personalizadas.
+                            
+export const receiver = new ExpressReceiver({
+  signingSecret:config.slack.signingSecret,
+  clientId:config.slack.clientID,
+  clientSecret:config.slack.clientSecret
 })
-import "./appSlack/events/reactionAdded";
-import "./appSlack/actions/actions";
-import "./appSlack/homeTab/home";
+
+export const app = new App({
+  receiver,
+  logLevel:LogLevel.INFO, // set loglevel at the App level
+  token: config.slack.botToken
+});     
+
+receiver.app.use(express.json());
+
+receiver.app.post('/webhook/pagerduty', (req, res) => {
+
+  console.log("retorno do pager teste", req.body);
+  
+  res.status(200).send('tudo safe');
+});
+
+
+import "./appSlack/events/reaction"   ;
+import "./appSlack/actions/actions"   ;
+import "./appSlack/homeTab/home"      ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//https://www.youtube.com/watch?v=OpOgksWFods&list=RDOpOgksWFods&start_radio=1
