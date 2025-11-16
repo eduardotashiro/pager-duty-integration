@@ -6,3 +6,6 @@ dist/
 .env
 .env.teste
 .config/
+config/
+incidents.json
+nodemon.json
