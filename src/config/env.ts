@@ -5,6 +5,8 @@ export const config = {
     slack:{
         botToken: process.env.SLACK_BOT_TOKEN!,
         signingSecret: process.env.SLACK_SIGNING_SECRET!,
+        clientID: process.env.SLACK_CLIENT_ID!,
+        clientSecret:process.env.SLACK_CLIENT_SECRET!
     },
     PagerDuty: {
         url: process.env.PAGER_URL_CREATE!,
@@ -16,4 +18,3 @@ export const config = {
         port: process.env.PORT || 3000,
     }
 }
-

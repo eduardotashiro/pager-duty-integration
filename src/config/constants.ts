@@ -1,11 +1,11 @@
 
 
-export const SLACK_URL_PATTERNS = {
-    //MENSAGEM DENTRO DA THREAD
-    THREAD_MESSAGE:(channel:string,threadTs:string, messageTs:string)=>
-    `${channel}/p${threadTs}?thread_ts${threadTs}&cid=${messageTs}`,
-
-    // MENSAGEM THREAD RAIZ
-    THREAD_ROOT:(channel:string,ts:string)=>
-    `${channel}/p${ts}`
-}
+export const USER_MAPPING: { [key: string]: string } = {
+  //pagerName : slackUserID
+  "Eduardo Tashiro":"ciclano",
+  "Matheus":"fulano",
+  "alguem aqui": "beltrano"
+        
+  
+  // add de todos futuramente . . . . . . . .. 
+};
