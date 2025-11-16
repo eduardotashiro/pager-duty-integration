@@ -1,9 +1,8 @@
 import { app } from "../../app";
 import { ModalView } from "@slack/types";
-import { createIncident } from "../../appPagerDuty/createIncident/createIncident";
-import dotenv from "dotenv";
-dotenv.config();
-
+import { createIncident,getAssignedPersonMention } from "../../appPagerDuty/createIncident/createIncident";
+import { saveIncident } from "../../appPagerDuty/storage/incidentsHistory";   // SALVAR NO BD FUTURAMENTE
+import { config } from "../../config/env";
 
 export function createModal(channel: string, ts: string,  thread_ts: string,text: string,messageAuthorId: string, placeholderTs: string, ): ModalView {
   return {
@@ -108,12 +107,12 @@ export function createModal(channel: string, ts: string,  thread_ts: string,text
 //submit
 app.view("incidente_modal", async ({ ack, view, client }:{body:any,ack:any,view:any,client:any}) => {
   await ack()
-
-
-  const titulo = view.state.values.titulo.assunto_input?.value ?? ""
-  const servico =view.state.values.servico.servico_input.selected_option?.value ?? ""
-  const urgencia =view.state.values.prioridade.prioridade_input.selected_option?.value ?? ""
-  const descricao = view.state.values.descricao.descricao_input?.value ?? ""
+  const vsv = view.state.values
+  
+  const titulo = vsv.titulo.assunto_input?.value ?? ""
+  const servico =vsv.servico.servico_input.selected_option?.value ?? ""
+  const urgencia =vsv.prioridade.prioridade_input.selected_option?.value ?? ""
+  const descricao = vsv.descricao.descricao_input?.value ?? ""
  
   console.log(`titulo:    ${titulo}`   )
   console.log(`service:   ${servico}`  )
@@ -124,15 +123,15 @@ app.view("incidente_modal", async ({ ack, view, client }:{body:any,ack:any,view:
   
   const metadata = JSON.parse(view.private_metadata);
   const channel = metadata.channel;
-  const ts = metadata.ts;                 //  Mensagem específica que foi reagida
-  const thread_ts = metadata.thread_ts;  //   Thread raiz (se existir)
+  const ts = metadata.ts;                     //  msg específica
+  const thread_ts = metadata.thread_ts;      //  Thread raiz
   const messageAuthorId = metadata.messageAuthorId;
   const placeholderTs = metadata.placeholderTs;
   //const botMessageTs = metadata.botMessageTs;
 
 
 
- const incident = await createIncident({  //pegar quem resolver futuramente incident.last_status_change_by ?
+ const incident = await createIncident({  
   titulo:titulo,
   servico:{
     id:servico,
@@ -145,7 +144,43 @@ app.view("incidente_modal", async ({ ack, view, client }:{body:any,ack:any,view:
   thread_ts: thread_ts //  Thread raiz
  })
  
- 
+
+
+/**
+ * assigments completo : [
+  {
+    "at": "2025-11-14T03:06:32Z",
+    "assignee": {
+      "id": "",
+      "type": "user_reference",
+      "summary": "Eduardo Tashiro",
+      "self": "h",
+      "html_url": ""
+    }
+  }
+ */
+
+
+
+await saveIncident({
+  incidentId: incident.id,                   // ID do PagerDuty
+  incidentNumber: incident.incident_number, // nº do incidente
+  channel: channel,
+  messageTs: placeholderTs, 
+  messageAuthorId: messageAuthorId,
+  status: "triggered",
+  createdAt: new Date(),
+  title: titulo,
+  service: servico, 
+  urgency: urgencia,
+  rawPagerDutyData: incident //guarda tudo do pager, seria bom refatorar e simplificar as coisas futuramente, 
+  // mas vamos fazer do jeito que da, fazer rodar, sera que consigo terminar antes da monthly ? nao sei
+});
+
+
+
+//jogar função de atribuiçao aqui e puxar no modal papai
+const pegacrazy = getAssignedPersonMention(incident)
 
 await client.chat.update({
   channel: channel,
@@ -156,7 +191,7 @@ await client.chat.update({
       type: "header",
       text: {
         type: "plain_text",
-        text: "Incidente Criado com Sucesso no :pagerduty-seeklogo:ager Duty !",
+        text: `Incidente #${incident.incident_number} Criado com Sucesso no :pagerduty-seeklogo:ager Duty !`,
         emoji: true
       }
     },
@@ -164,10 +199,10 @@ await client.chat.update({
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `<@${messageAuthorId}> sua solicitação foi registrada e nossa equipe técnica foi notificada.`
+        text: `<@${messageAuthorId}> sua solicitação foi registrada e nossa equipe técnica foi notificada.\n`
       }
     },
-    {
+   /* {
       type: "section",
       fields: [
         {
@@ -176,7 +211,7 @@ await client.chat.update({
         }
     
       ]
-    },
+    },*/
     {
       type: "section", 
       fields: [
@@ -187,6 +222,19 @@ await client.chat.update({
         {
           type: "mrkdwn",
           text: `*Status:* Em andamento`
+        },
+        {
+          type: "mrkdwn",
+          text: `*Atribuído para:* ${pegacrazy}`
+        }
+      ]
+    },
+     {
+      type: "context",
+      elements: [
+        {
+          type: "mrkdwn",
+          text: "*Retornaremos nesta mensagem com uma atualização assim que o incidente for concluído!*"
         }
       ]
     },
