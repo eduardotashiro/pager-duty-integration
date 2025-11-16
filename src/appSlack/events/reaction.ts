@@ -43,13 +43,13 @@ app.event("reaction_added", async ({ event, client }) => {
     const botMessage = await client.chat.postMessage({
       channel: e.item.channel,
       thread_ts: e.item.ts,
-      text: "Clique no botão para criar incidente",
+      text: "Criar incidente. . . ",
       blocks: [
         {
           type: "section",
           text: {
             type: "mrkdwn",
-            text: `:wave: Olá! \n\nVamos criar um incidente no PagerDuty para essa mensagem. Clique no botão abaixo para começar.`,
+            text: `processando. . . `,
           },
         },
         {
@@ -57,7 +57,7 @@ app.event("reaction_added", async ({ event, client }) => {
           elements: [
             {
               type: "button",
-              text: { type: "plain_text", text: "📋 Criar Incidente" },
+              text: { type: "plain_text", text: " Criar Incidente" },
               action_id: "cria_incidente_btn",
               value: "temp", // Valor temporário, que loucura, 3 horas tentando pegar o ts, mas só existe depois de enviar a msg KKKKKK
               style: "primary",
