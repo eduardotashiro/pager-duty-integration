@@ -1,11 +1,37 @@
+import { config } from "../config/env";
 
-
+ 
 export const USER_MAPPING: { [key: string]: string } = {
-  //pagerName : slackUserID
-  "Eduardo Tashiro":"ciclano",
-  "Matheus":"fulano",
-  "alguem aqui": "beltrano"
-        
-  
-  // add de todos futuramente . . . . . . . .. 
-};
+// pagerName       :               slackId
+  "Eduardo Tashiro":config.slackId.Eduardo,                                                                                                                                                   //quem sabe um dia
+  "Matheus Lessa":config.slackId.Matheus,
+  "Tamara Martinez":config.slackId.Tamara,
+  "Sergio":config.slackId.Sergio,
+  "Paul Ascher":config.slackId.Paul,
+  "Leandro":config.slackId.Leandro,
+  "Juan":config.slackId.Juan,
+  "Guillermo Apollonia":config.slackId.Guillermo,
+  "Fernando":config.slackId.Fernando,
+  "Andrea":config.slackId.Andrea,
+}
+                                                                                                                                               
+/*################################################
+##################################################
+  ################################################
+    ############################################  
+####    ####################################    ##
+########    ############################    ######
+##########    ########################    ########
+##############    ################    ############
+##################  ############  ################
+####################    ####    ##################
+########################    ######################
+##################################################
+##################################################
+##################################################
+##################################################
+##################################################
+##################################################
+##################################################
+################################################*/
+                                                                                                                                               

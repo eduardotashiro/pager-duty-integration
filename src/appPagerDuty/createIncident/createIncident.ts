@@ -1,53 +1,29 @@
 import { config } from "../../config/env"
 import { USER_MAPPING } from "../../config/constants";
 
- console.log("bora ver se consigo pegar as info...")
+export function getAssignedPersonMention(incident: any): string {
+  let nomeDoResponsavel = null;
 
-export function getAssignedPersonMention(incident:any) {
+  // estrutura uma porcaria preciso estudar mais 
+  if (incident.assignments?.length > 0) {
+    const lastAssignment = incident.assignments[incident.assignments.length - 1];
+    nomeDoResponsavel = lastAssignment.assignee?.summary;
 
-if (!incident.assignments || incident.assignments.length === 0 ) {
-  return `*Aguardando Atribuição.*`
-}
+  } else if (incident.assignees?.length > 0) {
+    nomeDoResponsavel = incident.assignees[0]?.summary;
 
-
- // pega smp o ultimo lk
-
-
-const lastAssignee = incident.assignments[incident.assignments.length - 1] ; // ultimo [] dos loko
-
-const nomeDoLouco = lastAssignee.assignee?.summary
-
-if (!nomeDoLouco) {
-  return `*Aguardando Atribuição*`
-}
-
-const slackiddoloko = USER_MAPPING[nomeDoLouco]
-
-if (slackiddoloko) {
-  return `<@${slackiddoloko}>`
-} else{
-  return `*${nomeDoLouco}*`
-  
-}
-  
-
-
-
-  /*const pegaLoko = incident 
-  const bora = pegaLoko.assignments[0]
-  const nomedoloko = bora.assignee.summary
-
-  if (!nomedoloko || pegaLoko.assignments.length === 0) {
-    return `Aguardando atribuição`
+  } else if (incident.agent?.summary) {
+    nomeDoResponsavel = incident.agent.summary;
   }
-  const slackiddoloko = USER_MAPPING[nomedoloko]
 
-  if (slackiddoloko) {
-    return `<@${slackiddoloko}>`
-  }else{
-    return `*${nomedoloko}*`
-  }*/
+  if (nomeDoResponsavel) {
+    const slackId = USER_MAPPING[nomeDoResponsavel];
+    return slackId ? `<@${slackId}>` : `*${nomeDoResponsavel}*`;
+  }
+
+  return "*Aguardando Atribuição*";
 }
+
 
 
 export async function createIncident({
@@ -155,35 +131,4 @@ const responseNotes = await fetch(`${config.PagerDuty.url}/${incidentId}/notes`,
 
   return data.incident;
 }
-
-
-
-
-
-export async function getIncident(incidentId: string) {
-  try {
-    const response = await fetch(`${config.PagerDuty.url}/${incidentId}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token token=${config.PagerDuty.token}`,
-        Accept: "application/vnd.pagerduty+json;version=2",
-      },
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`PagerDuty API error: ${response.status} - ${errorText}`);
-    }
-
-    const data = await response.json();
-    return data.incident;
-    
-  } catch (error) {
-    console.error("Erro ao buscar incidente:", error);
-    throw error;
-  }
-}
-
-
 

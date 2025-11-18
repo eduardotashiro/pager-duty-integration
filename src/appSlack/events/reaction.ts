@@ -29,8 +29,9 @@ app.event("reaction_added", async ({ event, client }) => {
   console.log("Usuário:", e.user);
   console.log("Emoji:", e.reaction);
   console.log("Mensagem:", e.item);
+  console.log("Canal:", e.item.channel)
 
-  if (e.reaction !== "hankey") return;
+  if (e.reaction !== "hankey") return
   incidentCount++; //quando tiver hometab
 
   try {
@@ -49,7 +50,7 @@ app.event("reaction_added", async ({ event, client }) => {
           type: "section",
           text: {
             type: "mrkdwn",
-            text: `processando. . . `,
+            text: `.`,
           },
         },
         {
@@ -78,7 +79,7 @@ app.event("reaction_added", async ({ event, client }) => {
           type: "section",
           text: {
             type: "mrkdwn",
-            text: `Vamos criar um incidente no PagerDuty para este caso.\n\nClique no botão abaixo para começar.`,
+            text: `Vamos criar um incidente no :pagerduty-seeklogo:ager Duty para este caso.\n\nClique no botão abaixo para começar.`,
           },
         },
         {

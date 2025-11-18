@@ -4,10 +4,12 @@
     "@slack/types": "^2.18.0",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
-    "pg": "^8.16.3"
+    "express-rate-limit": "^8.2.1",
+    "pg": "^8.16.3",
+    "redis": "^5.9.0"
   },
   "scripts": {
-    "dev": "nodemon --ignore 'src/incidents.json' --ignore 'incidents.json' --ext ts,js --exec ts-node src/server.ts",
+    "dev": "nodemon --ext ts --exec ts-node src/server.ts",
     "build": "tsc"
   },
   "devDependencies": {

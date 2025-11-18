@@ -16,5 +16,20 @@ export const config = {
     app:{
         urlThreadLink: process.env.URL_THREAD_LINK!,
         port: process.env.PORT || 3000,
+    },
+    redis:{
+        redisUrl: process.env.REDIS_URL!
+    },
+    slackId:{
+        Andrea:process.env.ANDREA!,
+        Fernando:process.env.FERNANDO!,
+        Guillermo:process.env.GUILLERMO!,
+        Juan:process.env.JUAN!,
+        Leandro:process.env.LEANDRO!,
+        Matheus:process.env.MATHEUS!,
+        Paul:process.env.PAUL!,
+        Sergio:process.env.SERGIO!,
+        Tamara:process.env.TAMARA!,
+        Eduardo:process.env.EDUARDO!
     }
 }
