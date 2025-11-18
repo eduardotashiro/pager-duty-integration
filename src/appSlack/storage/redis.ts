@@ -34,6 +34,7 @@ export class Redis$torage {
     messageTs: string,              // Timestamp da mensagem
     messageAuthorId: string,       // Quem criou
     incidentNumber?: string,      // Número do incidente
+    //mentionHystory ?
   ) {
     try {
 
@@ -57,8 +58,9 @@ export class Redis$torage {
         JSON.stringify(data)            // dados string
       );
 
-    
-      console.log(`teste salvou mesmo ? ${incidentId} -> ${messageTs}`);
+      // dados persiste po 24h
+      console.log(`salvo no redis: ${incidentId} -> ${messageTs}`);
+
       return true;
     } catch (error) {
       console.error(`erro ao salvar no Redis:`, error);
@@ -75,13 +77,17 @@ export class Redis$torage {
       
       if (data) {
         console.log(`encontrado no redis: ${incidentId}`);
-        return JSON.parse(data); // Converte string para objeto
+        return JSON.parse(data);
       }
       
       console.log(`não encontrado no redis: ${incidentId}`);
+
       return null;
+
     } catch (error) {
+
       console.error(`erro ao buscar no Redis:`, error);
+
       return null;
     }
   }
