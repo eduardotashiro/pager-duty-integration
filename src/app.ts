@@ -34,11 +34,11 @@ receiver.app.post("/webhook/pagerduty", /*webhookLimiter,*/ async (req, res) => 
   const agente = req.body.event?.agent;
 
 console.log(`evento: ${eventType}`)
-console.log(`evento: ${incidentData}`)
-console.log(`evento: ${incidentId}`)
-console.log(`evento: ${agente}`)
+console.log(`dados do evento: `,incidentData)
+console.log("dados",incidentData)
+console.log("pessoa que resolveu",agente) //.summary
   // filtro
-  const importantEvents = ["incident.triggered", "incident.resolved", "incident.acknowledged", "incident.escalated"] //incident.escalated
+  const importantEvents = ["incident.triggered", "incident.resolved", "incident.escalated"] //incident.escalated
   
   if (!importantEvents.includes(eventType)) {
     console.log(`Evento ignorado: ${eventType}`)
@@ -60,7 +60,7 @@ console.log(`evento: ${agente}`)
   }
 });
 
-// 🎯 IMPORTS ESSENCIAIS
+
 import "./appSlack/events/reaction";
 import "./appSlack/actions/actions"; 
 import "./appSlack/homeTab/home";
