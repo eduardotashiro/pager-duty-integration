@@ -2,7 +2,7 @@ import { App, ExpressReceiver, LogLevel } from "@slack/bolt";
 import { config } from "./config/env";
 import express from "express";
 import { updateIncidentMessage } from "./appSlack/Notifies/slackNotifier";
-//import rateLimit from "express-rate-limit";
+import rateLimit from "express-rate-limit";
 
 export const receiver = new ExpressReceiver({
   signingSecret: config.slack.signingSecret,
@@ -19,13 +19,13 @@ export const app = new App({
 receiver.app.use(express.json());
 
 
-//const webhookLimiter = rateLimit({
-//  windowMs: 1 * 60 * 1000, // 1 minuto
-//  max: 50,                // máximo 50 requisições/min
-//  message: "Estão querendo invadir, calma ae"
-//});
+const webhookLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minuto
+  max: 50,                // máximo 50 requisições/min
+  message: "Estão querendo invadir, calma ae"
+});
 
-receiver.app.post("/webhook/pagerduty",/*webhookLimiter,*/ async (req, res) => {
+receiver.app.post("/webhook/pagerduty",webhookLimiter, async (req, res) => {
     res.status(200).send("OK");
 
     const eventType = req.body.event?.event_type;
