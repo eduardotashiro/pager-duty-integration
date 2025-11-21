@@ -2,9 +2,9 @@ import { config } from "../config/env";
 
  
 export const USER_MAPPING: { [key: string]: string } = {
-// pagerName       :               slackId
+
   "Eduardo Tashiro":config.slackId.Eduardo,                                                                                                                                                   //quem sabe um dia
-  "Matheus Lessa":config.slackId.Matheus,
+  "Matheus":config.slackId.Matheus,
   "Tamara Martinez":config.slackId.Tamara,
   "Sergio":config.slackId.Sergio,
   "Paul Ascher":config.slackId.Paul,
@@ -13,6 +13,11 @@ export const USER_MAPPING: { [key: string]: string } = {
   "Guillermo Apollonia":config.slackId.Guillermo,
   "Fernando":config.slackId.Fernando,
   "Andrea":config.slackId.Andrea,
+}
+
+export const TRANSLATE:{[KEY:string]:string} = {
+   triggered: "Em andamento",
+    resolved: "Resolvido"
 }
                                                                                                                                                
 /*################################################
