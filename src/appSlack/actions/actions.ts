@@ -1,5 +1,5 @@
-import { createModal } from "../modalSlack/modal";
 import { app } from "../../app";
+import { createModal } from "../modalSlack/modal";
 import { BlockButtonAction} from "@slack/bolt"
 
 
@@ -28,7 +28,7 @@ app.action("cria_incidente_btn", async ({ ack, body, client }) => {
       view: createModal(channel, ts, thread_ts, text, messageAuthorId, placeholderTs),
     });
   } catch (error) {
-    console.error("Erro ao abrir modal:", error); //não vai ter mas nao custa nada né 
+    console.error("Erro ao abrir modal:", error); 
   }
 });
 

@@ -6,20 +6,30 @@ type ReactionAddedEvent = SlackEventMiddlewareArgs<"reaction_added">["event"];
 let incidentCount = 0;
 
 async function searchOriginalMessage(client: any, channel: string, ts: string) {
-  // Bpega toda a thread
-  const result = await client.conversations.replies({
-    channel: channel,
-    ts: ts,
-  });
-
+  
+  // Busca todas as mensagens da thread
+  const result = await client.conversations.replies({ channel, ts });
   const allMessages = result.messages || [];
 
-  const originalMessage = allMessages.find((m:any) => m.ts === ts);      // msg reagida
-  const threadOrigin = allMessages[0]?.thread_ts || allMessages[0]?.ts; // thread raiz
+  // Identifica mensagem reagida e thread raiz
+  const originalMessage = allMessages.find((m: any) => m.ts === ts);
+  const threadOrigin = allMessages[0]?.thread_ts || allMessages[0]?.ts;
+  
+  let text = originalMessage.text || threadOrigin.text || "";
 
-  return { originalMessage, threadOrigin };
+  // Substitui menções <@U123> por nomes reais
+  const mention = /<@([A-Z0-9]+)>/g;             // Regex com grupo de captura
+  const matches = [...text.matchAll(mention)];  // Converte iterador em array
+
+  for (const match of matches) {
+    const userId = match[1];                                      // Só o ID (sem <>@)
+    const userInfo = await client.users.info({ user: userId });
+    const realName = userInfo.user.profile.real_name;
+    text = text.replace(match[0], realName);                   // match[0] = texto completo
+  }
+  
+  return { originalMessage, threadOrigin, text };
 }
-
 
 
 app.event("reaction_added", async ({ event, client }) => {
@@ -39,6 +49,7 @@ app.event("reaction_added", async ({ event, client }) => {
     const resultt = await searchOriginalMessage(client,e.item.channel,e.item.ts)
     const originalMessage = resultt.originalMessage  // msg reagida
     const threadOrigin = resultt.threadOrigin       // thread raiz
+    const cleanTextnoMention = resultt.text
 
     // criando a msg sem o value
     const botMessage = await client.chat.postMessage({
@@ -79,7 +90,7 @@ app.event("reaction_added", async ({ event, client }) => {
           type: "section",
           text: {
             type: "mrkdwn",
-            text: `Vamos criar um incidente no :pagerduty-seeklogo:ager Duty para este caso.\n\nClique no botão abaixo para começar.`,
+            text: `Clique no botão abaixo para iniciar a abertura do incidente no :pagerduty:ager Duty.`, //:pagerduty-seeklogo: - dev  | :pagerduty: - firma
           },
         },
         {
@@ -94,7 +105,7 @@ app.event("reaction_added", async ({ event, client }) => {
                 thread_ts: threadOrigin, //   THREAD RAIZ !!!!
                 messageAuthorId: originalMessage.user,
                 placeholderTs: botMessage.ts,
-                text: originalMessage.text || "",
+                text: cleanTextnoMention,
               }),
               style: "primary", //danger ?
             },

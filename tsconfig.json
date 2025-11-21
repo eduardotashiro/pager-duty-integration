@@ -12,5 +12,5 @@
     "types": ["node"]
   },
   "ts-node": { "transpileOnly": true },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "src/config"]
 }

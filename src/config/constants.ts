@@ -3,7 +3,7 @@ import { config } from "../config/env";
  
 export const USER_MAPPING: { [key: string]: string } = {
 
-  "Eduardo Tashiro":config.slackId.Eduardo,                                                                                                                                                   //quem sabe um dia
+  "Eduardo Tashiro":config.slackId.Eduardo,                                                                                                                                                                                 //quem sabe um dia
   "Matheus":config.slackId.Matheus,
   "Tamara Martinez":config.slackId.Tamara,
   "Sergio":config.slackId.Sergio,

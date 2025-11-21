@@ -1,15 +1,28 @@
-import { getMessageReference } from "../storage/messageStorage";
 import { app } from "../../app";
-import { getAssignedPersonMention } from "../../appPagerDuty/createIncident/createIncident";
+import { getMessageReference } from "../storage/messageStorage";
+import { USER_MAPPING, TRANSLATE } from "../../config/constants";
 
-/*function statusTranslate(status: string): string {
-  const traducoes: { [key: string]: string } = {
-    'triggered': 'Em andamento',
-    'acknowledged': 'Assumido', 
-    'resolved': 'Resolvido'
-  };
-  return traducoes[status] || 'Em andamento';
-}*/
+async function getAssignedPersonMention(incident: any): Promise<string> {
+  //rettorna uma promise de string
+  let nomeDoResponsavel = null;
+
+  if (incident.assignments?.length > 0) {const lastAssignment = incident.assignments[incident.assignments.length - 1];
+    nomeDoResponsavel = lastAssignment.assignee?.summary;
+
+  } else if (incident.assignees?.length > 0) {
+    nomeDoResponsavel = incident.assignees[0]?.summary;
+
+  } else if (incident.agent?.summary) {
+    nomeDoResponsavel = incident.agent.summary;
+  }
+
+  if (nomeDoResponsavel) {
+    const slackId = USER_MAPPING[nomeDoResponsavel];
+    return slackId ? `<@${slackId}>` : `*${nomeDoResponsavel}*`;
+  }
+
+  return "*Aguardando Atribuição*";
+}
 
 export async function updateIncidentMessage(
   incidentId: string,
@@ -19,17 +32,13 @@ export async function updateIncidentMessage(
 ) {
   try {
     const messageRef = await getMessageReference(incidentId);
-    
-    if (!messageRef) {
-      console.log(`mensagem não encontrada para ${incidentId}`);
-      return;
-    }
 
     const incidentNumber = incidentData.number;
-   // const stt = statusTranslate(incidentData.status);
+
+    const stt = TRANSLATE[incidentData.status] || "Em andamento";
 
     if (eventType === "incident.triggered") {
-      const assigneeMention = getAssignedPersonMention(incidentData);
+      const assigneeMention = await getAssignedPersonMention(incidentData);
 
       await app.client.chat.update({
         channel: messageRef.channel,
@@ -37,171 +46,172 @@ export async function updateIncidentMessage(
         text: `Incidente #${incidentNumber} criado com sucesso!`,
         blocks: [
           {
-            type: "header",
+            type: "section",
             text: {
-              type: "plain_text",
-              text: `Incidente #${incidentNumber} Criado com Sucesso no :pagerduty-seeklogo:ager Duty !`,
-              emoji: true
-            }
+              type: "mrkdwn",
+              text: `:pagerduty: *Incidente #${incidentNumber}*`, //:pagerduty-seeklogo: - dev  | :pagerduty: - firma
+            },
           },
           {
             type: "section",
             text: {
               type: "mrkdwn",
-              text: `<@${messageRef.messageAuthorId}> sua solicitação foi registrada e nossa equipe técnica foi notificada.`
-            }
-          },
-          {
-            type: "section", 
-            fields: [
-              {
-                type: "mrkdwn",
-                text: `*Prioridade:* ${incidentData.urgency === 'high' ? 'Alta' : 'Baixa'}`
-              },
-             /* {
-                type: "mrkdwn",
-                text: `*Status:* ${stt}`
-              },*/
-              {
-                type: "mrkdwn",
-                text: `*Atribuído para:* ${assigneeMention}`
-              }
-            ]
+              text: `<@${messageRef.messageAuthorId}> sua solicitação foi registrada e nossa equipe técnica foi notificada.`,
+            },
           },
           {
             type: "section",
-            text: 
+            fields: [
               {
                 type: "mrkdwn",
-                text: ">Retornaremos nesta mensagem com uma atualização assim que o incidente for resolvido."
-              }
+                text: "•   *Prioridade:* ` Alta `", //`•   *Prioridade:* \`${incidentData.urgency === "high" ? "Alta" : "Baixa"}\``,
+              },
+              {
+                type: "mrkdwn",
+                text: `•   *Status:* \` ${stt} \``,
+              },
+              {
+                type: "mrkdwn",
+                text: `•   *Responsável:* \` ${assigneeMention} \``,
+              },
+            ],
           },
           {
-            type: "context",
-            elements: [
-              {
-                type: "mrkdwn",
-                text: `${new Date().toLocaleString('pt-BR')} | TUNA :cactus:`
-              }
-            ]
-          }
-        ]
-      })
-    } else if (eventType === "incident.escalated"){
- const assigneeMention = getAssignedPersonMention(incidentData);
+            type: "section",
+            text: {
+              type: "mrkdwn",
+              text: "```Retornaremos nesta mensagem com uma atualização assim que o incidente for resolvido.```",
+            },
+          },
+        ],
+      });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    } else if (eventType === "incident.escalated") {
+      const assigneeMention = await getAssignedPersonMention(incidentData);
 
       await app.client.chat.update({
         channel: messageRef.channel,
         ts: messageRef.messageTs,
-        text: `Incidente #${incidentNumber} criado com sucesso!`,
+        text: `Incidente #${incidentNumber} atualizado!`,
         blocks: [
           {
-            type: "header",
+            type: "section",
             text: {
-              type: "plain_text",
-              text: `Incidente #${incidentNumber} Criado com Sucesso no :pagerduty-seeklogo:ager Duty !`,
-              emoji: true
-            }
+              type: "mrkdwn",
+              text: `:pagerduty: *Incidente #${incidentNumber}*`, //:pagerduty-seeklogo: - dev  | :pagerduty: - firma
+            },
           },
           {
             type: "section",
             text: {
               type: "mrkdwn",
-              text: `<@${messageRef.messageAuthorId}> sua solicitação foi registrada e nossa equipe técnica foi notificada.`
-            }
-          },
-          {
-            type: "section", 
-            fields: [
-              {
-                type: "mrkdwn",
-                text: `*Prioridade:* ${incidentData.urgency === 'high' ? 'Alta' : 'Baixa'}`
-              },
-             /* {
-                type: "mrkdwn",
-                text: `*Status:* ${stt}`
-              },*/
-              {
-                type: "mrkdwn",
-                text: `*Atribuído para:* ${assigneeMention}`
-              },
-              {
-                type: "mrkdwn",
-                text: `*Reatribuido para:* ${assigneeMention}`
-              }
-            ]
+              text: `<@${messageRef.messageAuthorId}> sua solicitação foi registrada e nossa equipe técnica foi notificada.`,
+            },
           },
           {
             type: "section",
-            text: 
+            fields: [
               {
                 type: "mrkdwn",
-                text: ">Retornaremos nesta mensagem com uma atualização assim que o incidente for resolvido."
-              }
+                text: "•   *Prioridade:* ` Alta `", //`•   *Prioridade:* \`${incidentData.urgency === "high" ? "Alta" : "Baixa"}\``,
+              },
+              {
+                type: "mrkdwn",
+                text: `•   *Status:* \` ${stt} \``,
+              },
+              {
+                type: "mrkdwn",
+                text: `•   *Responsável:* \` ${assigneeMention} \``,
+              },
+            ],
           },
           {
-            type: "context",
-            elements: [
-              {
-                type: "mrkdwn",
-                text: `${new Date().toLocaleString('pt-BR')} | TUNA :cactus:`
-              }
-            ]
-          }
-        ]
-      })
-    }  else if (eventType === "incident.resolved") {
-      const resolvedByMention = getAssignedPersonMention({ agent: agente });
+            type: "section",
+            text: {
+              type: "mrkdwn",
+              text: "```Retornaremos nesta mensagem com uma atualização assim que o incidente for resolvido.```",
+            },
+          },
+        ],
+      });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    } else if (eventType === "incident.resolved") {
+      // objeto com agent porque no resolved ele vem separado
+      const resolvedByMention = await getAssignedPersonMention({agent: agente,});
 
       await app.client.chat.update({
         channel: messageRef.channel,
         ts: messageRef.messageTs,
-        text: `🎉 Incidente Resolvido no PagerDuty!`,
+        text: `Incidente Resolvido no PagerDuty!`,
         blocks: [
           {
-            type: "header",
+            type: "section",
             text: {
-              type: "plain_text",
-              text: `Incidente #${incidentNumber} Resolvido no :pagerduty-seeklogo:ager Duty !`,
-              emoji: true
-            }
+              type: "mrkdwn",
+              text: `:pagerduty: *Incidente #${incidentNumber}*`, //:pagerduty-seeklogo: - dev  | :pagerduty: - firma
+            },
           },
           {
             type: "section",
             text: {
               type: "mrkdwn",
-              text: `Ótima notícia <@${messageRef.messageAuthorId}>, informamos que o seu incidente foi resolvido com sucesso!`
-            }
+              text: `<@${messageRef.messageAuthorId}>, informamos que o seu incidente foi resolvido com sucesso!`,
+            },
           },
           {
-            type: "section", 
+            type: "section",
             fields: [
               {
                 type: "mrkdwn",
-                text: `*Responsável pela resolução:* ${resolvedByMention}`
+                text: "•   *Prioridade:* ` Alta `", //`•   *Prioridade:* \`${incidentData.urgency === "high" ? "Alta" : "Baixa"}\``,
               },
-            ]
-          },
-          {
-            type: "section",
-            text: {
-              type: "mrkdwn",
-              text: `>Precisa de suporte adicional ? Envie sua dúvida e reaja com :sos: para que um chamado seja criado automaticamente em nossa central de ajuda !`
-            }
-          },
-          {
-            type: "context",
-            elements: [
               {
                 type: "mrkdwn",
-                text: `Última atualização: ${new Date().toLocaleString('pt-BR')} | TUNA :cactus:`
-              }
-            ]
-          }
-        ]
+                text: `•   *Status:* \` ${stt} \``,
+              },
+              {
+                type: "mrkdwn",
+                text: `•   *Responsável:* \` ${resolvedByMention} \``,
+              },
+            ],
+          },
+        ],
       });
     }
-
   } catch (error) {
     console.error(`erro ao atualizar mensagem:`, error);
   }

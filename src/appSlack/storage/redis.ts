@@ -9,7 +9,6 @@ export class Redis$torage {
   constructor() {
     console.log("Iniciando primeira conexão com redis...");
 
-    
     this.client = createClient({
       url: config.redis.redisUrl,
     });
@@ -19,7 +18,7 @@ export class Redis$torage {
   // methotd connect
   async connect() {
     try {
-    await this.client.connect(); 
+      await this.client.connect();
       console.log(`conectado ao redis`);
     } catch (error) {
       console.error("err: redis não conectado:", error);
@@ -29,15 +28,14 @@ export class Redis$torage {
 
   // save in redis
   async saveMessageReference(
-    incidentId: string,               // ID do incidente (chave)
-    channel: string,                 // Canal do Slack
-    messageTs: string,              // Timestamp da mensagem
-    messageAuthorId: string,       // Quem criou
-    incidentNumber?: string,      // Número do incidente
+    incidentId: string,         // ID do incidente (chave)
+    channel: string,           // Canal do Slack
+    messageTs: string,        // Timestamp da mensagem
+    messageAuthorId: string, // Quem criou
+    incidentNumber?: string // Número do incidente
     //mentionHystory ?
   ) {
     try {
-
       // dados p/ salvar
       const data = {
         incidentId,
@@ -51,41 +49,38 @@ export class Redis$torage {
       // dados persiste po 24h
       console.log(`salvo no redis: ${incidentId} -> ${messageTs}`);
 
-
       await this.client.setEx(
-        `incident:${incidentId}`,         // Chave: "incident:Q1A2B3C4"
-        86400,                           // 24h em seg
-        JSON.stringify(data)            // dados string
+        `incident:${incidentId}`, // Chave: "incident:Q1A2B3C4"
+        432000,                  // 5 dias em seg
+        JSON.stringify(data)    // object -> text, redis só salva string cara acorda
       );
 
-      // dados persiste po 24h
-      console.log(`salvo no redis: ${incidentId} -> ${messageTs}`);
-
       return true;
+
     } catch (error) {
       console.error(`erro ao salvar no Redis:`, error);
+
       return false;
     }
   }
 
 
-  //get redis 
+
+  //get redis
   async getMessageReference(incidentId: string) {
     try {
       // busca por chave
       const data = await this.client.get(`incident:${incidentId}`);
-      
+
       if (data) {
         console.log(`encontrado no redis: ${incidentId}`);
-        return JSON.parse(data);
+        return JSON.parse(data);    //text -> object
       }
-      
+
       console.log(`não encontrado no redis: ${incidentId}`);
 
       return null;
-
     } catch (error) {
-
       console.error(`erro ao buscar no Redis:`, error);
 
       return null;
@@ -96,17 +91,14 @@ export class Redis$torage {
 // instância global, conexão unica
 export const redisStorage = new Redis$torage();
 
-
-
-
 //
-//               _ _     
-//              | (_)    
-//  _ __ ___  __| |_ ___ 
+//               _ _
+//              | (_)
+//  _ __ ___  __| |_ ___
 // | '__/ _ \/ _` | / __|
 // | | |  __/ (_| | \__ \
 // |_|  \___|\__,_|_|___/
-//                       
-//                       
+//
+//
 //
 //

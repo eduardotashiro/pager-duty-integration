@@ -1,5 +1,5 @@
 import { app } from "../../app";
-import { config } from "../../config/env"
+import { config } from "../../config/env";
 
 app.event("app_home_opened", async ({ event, client }) => {
   try {
@@ -10,7 +10,7 @@ app.event("app_home_opened", async ({ event, client }) => {
         blocks: [
           {
             type: "image",
-            image_url: /*${config.}*/``,
+            image_url: /*${config.}*/ ``,
             alt_text: "Banner principal",
           },
 

@@ -22,4 +22,3 @@ export async function saveMessageReference(
 export async function getMessageReference(incidentId: string) {
   return await redisStorage.getMessageReference(incidentId);
 }
-
