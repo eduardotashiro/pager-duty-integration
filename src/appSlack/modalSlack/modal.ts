@@ -18,27 +18,42 @@ export function createModal(
 
   const allServices: ServiceOption[] = [
     {
-      text: { type: "plain_text", text: "Plataforma Anota Aí" }, //Anota Aí
+      text: {
+        type: "plain_text",
+        text: "Plataforma Anota Aí  →  Alertas da plataforma",
+      }, //Anota Aí
       value: "P9Q80RE",
     },
     {
-      text: { type: "plain_text", text: "Console Tuna API" }, //Console API
+      text: {
+        type: "plain_text",
+        text: "Console Tuna API  →  Processos internos do Console",
+      }, //Console API
       value: "PSKOIES",
     },
     {
-      text: { type: "plain_text", text: "Console Tuna" }, //Console Web
+      text: { type: "plain_text", text: "Console Tuna  →  Interface web" }, //Console Web
       value: "PJAHA64",
     },
     {
-      text: { type: "plain_text", text: "Tuna Core API" }, //Engine API
+      text: {
+        type: "plain_text",
+        text: "Tuna Core API  →  Processamento de pagamentos",
+      }, //Engine API
       value: "P5TGWBC",
     },
     {
-      text: { type: "plain_text", text: "Notificações" }, //Notifications
+      text: {
+        type: "plain_text",
+        text: "Notificações  →  Comunicação com provedores",
+      }, //Notifications
       value: "P8RZRP0",
     },
     {
-      text: { type: "plain_text", text: "Tokenização" }, //Token API
+      text: {
+        type: "plain_text",
+        text: "Tokenização  →  Token de cartão de crédito",
+      }, //Token API
       value: "PCGAOFE",
     },
   ];
@@ -46,7 +61,7 @@ export function createModal(
   let servicesToShow;
 
   switch (channel) {
-    case "C09E8US58TS": // C03KR86CDGX
+    case "C09E8US5CNL": // C03KR86CDGX   C09E8US58TS
       servicesToShow = allServices;
       break;
 
@@ -75,9 +90,7 @@ export function createModal(
       break;
   }
 
-
   return {
-    
     type: "modal",
     callback_id: "incidente_modal",
     private_metadata: JSON.stringify({
@@ -91,58 +104,57 @@ export function createModal(
     submit: { type: "plain_text", text: "Enviar" },
     close: { type: "plain_text", text: "Cancelar" },
     blocks: [
-      /* {
-			type: "section",
-			text: {
-				type: "mrkdwn",
-				text: "This is a section block with an accessory image."
-			},
-			accessory: {
-				type: "image",
-				image_url: "https://github.com/eduardotashiro/pager-duty-integration/blob/fdfd096777bb3d93c6bfdf01f2cc2446e5b2998d/src/image/pagerduty-seeklogo.png",
-				alt_text: "cute cat"
-			}
-		},*/
       {
         type: "input",
         block_id: "titulo",
         label: { type: "plain_text", text: "Título" },
+        hint: {
+          type: "plain_text",
+          text: "Assunto do incidente.",
+        },
         element: {
           type: "plain_text_input",
           action_id: "assunto_input",
           placeholder: {
             type: "plain_text",
-            text: "Digite um título...",
+            text: "Assunto",
           },
         },
-      },
-      {
-        type: "divider",
-      },
-      {
-        type: "context",
-        elements: [
-          {
-            type: "mrkdwn",
-            text:
-              "*Serviços disponíveis*\n\n" +
-              "•  *Plataforma Anota Aí* → Caso não encontre o serviço específico, utilize este.\n" + // OK
-              "•  *Console Tuna API* → Back-end do Console, gerencia recursos e integrações.\n" +  //OK
-              "•  *Console Tuna* → Interface web do Console.\n" +                                //OK
-              "•  *Tuna Core API* → Processa transações e operações financeiras.\n" +          //OK
-              "•  *Notificações* → Comunicação entre provedores e antifraude.\n" +           //OK
-              "•  *Tokenização* → Armazenamento e tokenização de cartões de crédito.",     //OK
-          },
-        ],
       },
       {
         type: "input",
         block_id: "servico",
         label: { type: "plain_text", text: "Serviço" },
+        hint: {
+          type: "plain_text",
+          text: "Selecione o serviço relacionado ao incidente.",
+        },
         element: {
           type: "static_select",
           action_id: "servico_input",
           options: servicesToShow,
+        },
+      },
+      {
+        type: "input",
+        block_id: "urgencia",
+        label: {
+          type: "plain_text",
+          text: "Urgência",
+        },
+        element: {
+          type: "radio_buttons",
+          action_id: "urgencia_input",
+          options: [
+            {
+              text: { type: "plain_text", text: "Baixa" },
+              value: "low",
+            },
+            {
+              text: { type: "plain_text", text: "Alta" },
+              value: "high",
+            },
+          ],
         },
       },
       {
@@ -156,6 +168,14 @@ export function createModal(
           initial_value: text,
         },
       },
+      {
+        type: "image",
+        image_url:
+          "https://s17.aconvert.com/convert/p3r68-cdx67/zls53-v19xp.png",
+        alt_text: "Anota Aí",
+      },
+      //https://www.aconvert.com/pt/image/
+
       /*
        *como ativar upload de arquivos no modal: (pager não suporta mas só a nível de curiosidade)
        *
@@ -211,14 +231,14 @@ app.view(
 
     const titulo = vsv.titulo.assunto_input?.value ?? "";
     const servico = vsv.servico.servico_input.selected_option?.value ?? "";
-    //const urgencia =vsv.prioridade.prioridade_input.selected_option?.value ?? "";
+    const urgencia = vsv.urgencia.urgencia_input.selected_option?.value ?? "";
     const descricao = vsv.descricao.descricao_input?.value ?? "";
 
     console.log("dados do incidente:", {
       titulo,
       servico,
       descricao,
-      /*urgencia,*/
+      urgencia,
     });
 
     const metadata = JSON.parse(view.private_metadata);
@@ -235,7 +255,7 @@ app.view(
         type: "service_reference",
       },
       descricao: descricao,
-      /*urgencia: "high", //urgencia,*/
+      urgencia: urgencia,
       channel,
       ts: ts, //  msg específica
       thread_ts: thread_ts, //  Thread raiz
@@ -247,10 +267,10 @@ app.view(
     console.log(`salvando`);
 
     saveMessageReference(
-      incident.id,                 // ID do PagerDuty
-      channel,                    // Canal do Slack
-      placeholderTs,             // Timestamp da mensagem do bot
-      messageAuthorId,          // Quem criou o incidente
+      incident.id, // ID do PagerDuty
+      channel, // Canal do Slack
+      placeholderTs, // Timestamp da mensagem do bot
+      messageAuthorId, // Quem criou o incidente
       incident.incident_number // Número do incidente
     );
 

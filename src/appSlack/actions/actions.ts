@@ -4,6 +4,7 @@ import { BlockButtonAction} from "@slack/bolt"
 
 
 // btn pro modal,
+
 app.action("cria_incidente_btn", async ({ ack, body, client }) => {
   await ack();
 
@@ -31,4 +32,3 @@ app.action("cria_incidente_btn", async ({ ack, body, client }) => {
     console.error("Erro ao abrir modal:", error); 
   }
 });
-

@@ -1,5 +1,5 @@
 import { createClient } from "redis";
-import { config } from "../../config/env";
+import { config } from "./config/env";
 
 // classe fala c redis
 export class Redis$torage {
@@ -28,9 +28,9 @@ export class Redis$torage {
 
   // save in redis
   async saveMessageReference(
-    incidentId: string,         // ID do incidente (chave)
-    channel: string,           // Canal do Slack
-    messageTs: string,        // Timestamp da mensagem
+    incidentId: string, // ID do incidente (chave)
+    channel: string, // Canal do Slack
+    messageTs: string, // Timestamp da mensagem
     messageAuthorId: string, // Quem criou
     incidentNumber?: string // Número do incidente
     //mentionHystory ?
@@ -51,20 +51,17 @@ export class Redis$torage {
 
       await this.client.setEx(
         `incident:${incidentId}`, // Chave: "incident:Q1A2B3C4"
-        432000,                  // 5 dias em seg
-        JSON.stringify(data)    // object -> text, redis só salva string cara acorda
+        432000, // 5 dias em seg
+        JSON.stringify(data) // object -> text, redis só salva string cara acorda
       );
 
       return true;
-
     } catch (error) {
       console.error(`erro ao salvar no Redis:`, error);
 
       return false;
     }
   }
-
-
 
   //get redis
   async getMessageReference(incidentId: string) {
@@ -74,7 +71,7 @@ export class Redis$torage {
 
       if (data) {
         console.log(`encontrado no redis: ${incidentId}`);
-        return JSON.parse(data);    //text -> object
+        return JSON.parse(data); //text -> object
       }
 
       console.log(`não encontrado no redis: ${incidentId}`);

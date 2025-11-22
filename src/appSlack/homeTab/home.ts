@@ -1,5 +1,5 @@
 import { app } from "../../app";
-import { config } from "../../config/env";
+import { config } from "../storage/config/env";
 
 app.event("app_home_opened", async ({ event, client }) => {
   try {

@@ -1,10 +1,10 @@
-import { config } from "../../config/env";
+import { config } from "../../appSlack/storage/config/env";
 
 export async function createIncident({
   titulo,
   servico,
   descricao,
-  /* urgencia,*/
+  urgencia,
   channel,
   ts,
   thread_ts,
@@ -12,7 +12,7 @@ export async function createIncident({
   titulo: string;
   servico: { id: string; type: string };
   descricao: string;
-  /* urgencia:string,*/
+  urgencia:string,
   channel: string;
   ts: string; // msg especifica da thread
   thread_ts: string; //thread raiz
@@ -26,7 +26,7 @@ export async function createIncident({
         type: "incident_body",
         details: descricao,
       },
-      urgency: "high",
+      urgency: urgencia,
     },
   };
 
@@ -44,7 +44,9 @@ export async function createIncident({
   console.log("incidente criado", data);
 
   console.log("Agora bora ver o que tem dentro de assignments huahuahua");
-  console.log( "assignments completo :", JSON.stringify(data.incident?.assignments, null, 2)
+  console.log(
+    "assignments completo :",
+    JSON.stringify(data.incident?.assignments, null, 2)
   );
 
   const incidentId = data.incident.id;
@@ -55,13 +57,15 @@ export async function createIncident({
 
   let slackLink: string;
   if (thread_ts && thread_ts !== ts) {
-    const messageTsFormatted = ts.replace(".", "")//.padEnd(16, "0"); //preenche o 17 com 0 pq o slack ta chato
-    const threadTsFormatted = thread_ts.replace(".", "")//.padEnd(16, "0"); //preenche o 17 com 0 pq o slack ta chato
+    const messageTsFormatted = ts.replace(".", ""); //.padEnd(16, "0"); //preenche o 17 com 0 pq o slack ta chato
+    const threadTsFormatted = thread_ts.replace(".", ""); //.padEnd(16, "0"); //preenche o 17 com 0 pq o slack ta chato
 
     slackLink = `${config.app.urlThreadLink}/${channel}/p${messageTsFormatted}?thread_ts=${threadTsFormatted}&cid=${channel}`;
   } else {
     // Para mensagem FORA de thread ou thread raiz
-    slackLink = `${config.app.urlThreadLink}/${channel}/p${ts.replace(".", "")/*.padEnd(16, "0")*/}`;
+    slackLink = `${config.app.urlThreadLink}/${channel}/p${
+      ts.replace(".", "") /*.padEnd(16, "0")*/
+    }`;
   }
 
   console.log("LINK GERADO:", slackLink);
@@ -91,5 +95,5 @@ export async function createIncident({
   const notesData = await responseNotes.json();
   console.log("Nota criada com sucesso", notesData);
 
-  return data.incident
+  return data.incident;
 }

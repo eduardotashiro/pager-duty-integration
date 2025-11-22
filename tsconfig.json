@@ -12,5 +12,5 @@
     "types": ["node"]
   },
   "ts-node": { "transpileOnly": true },
-  "include": ["src/**/*", "src/config"]
+  "include": ["src/**/*", "src/appSlack/storage/config"]
 }
