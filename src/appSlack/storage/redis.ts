@@ -1,5 +1,5 @@
 import { createClient } from "redis";
-import { config } from "./config/env";
+import { config } from "../../config/env";
 
 // classe fala c redis
 export class Redis$torage {

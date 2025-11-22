@@ -1,5 +1,5 @@
 import { App, ExpressReceiver, LogLevel } from "@slack/bolt";
-import { config } from "./appSlack/storage/config/env";
+import { config } from "./config/env";
 import express from "express";
 import { updateIncidentMessage } from "./appSlack/Notifies/slackNotifier";
 import rateLimit from "express-rate-limit";

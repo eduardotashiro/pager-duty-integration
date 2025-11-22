@@ -1,4 +1,4 @@
-import { config } from "../../appSlack/storage/config/env";
+import { config } from "../../config/env";
 
 export async function createIncident({
   titulo,

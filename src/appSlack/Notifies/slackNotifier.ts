@@ -1,6 +1,6 @@
 import { app } from "../../app";
 import { getMessageReference } from "../storage/messageStorage";
-import { USER_MAPPING, TRANSLATE } from "../storage/config/constants";
+import { USER_MAPPING, TRANSLATE } from "../../config/constants";
 
 async function getAssignedPersonMention(incident: any): Promise<string> {
   //rettorna uma promise de string

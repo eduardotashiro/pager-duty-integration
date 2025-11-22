@@ -168,12 +168,12 @@ export function createModal(
           initial_value: text,
         },
       },
-      {
-        type: "image",
-        image_url:
-          "https://s17.aconvert.com/convert/p3r68-cdx67/zls53-v19xp.png",
-        alt_text: "Anota Aí",
-      },
+     {
+  type: "image",
+  image_url: "https://raw.githubusercontent.com/eduardotashiro/pager-duty-integration/74fac7220c9aec40b6418278ebd61af3a04c5fe0/src/image/logo-anotaai-colored.png",
+  alt_text: "Anota Aí"
+}
+      
       //https://www.aconvert.com/pt/image/
 
       /*
