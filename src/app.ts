@@ -34,8 +34,8 @@ receiver.app.post("/webhook/pagerduty", webhookLimiter, async (req, res) => {
 
   console.log(`evento: ${eventType}`);
   console.log(`dados do evento: `, incidentData);
-  console.log("dados", incidentData);
-  console.log("pessoa que resolveu", agente); //.summary
+  console.log("dados", incidentId);
+
   // filtro
   const importantEvents = [
     "incident.triggered", //qnd cria
@@ -55,6 +55,9 @@ receiver.app.post("/webhook/pagerduty", webhookLimiter, async (req, res) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     await updateIncidentMessage(incidentId, eventType, incidentData, agente);
+
+      console.log("pessoa que resolveu", agente); //.summary
+      //console.log("dbug",req.body.event)
   }
 });
 

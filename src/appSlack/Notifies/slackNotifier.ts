@@ -7,8 +7,7 @@ async function getAssignedPersonMention(incident: any): Promise<string> {
   let nomeDoResponsavel = null;
 
   if (incident.assignments?.length > 0) {
-    const lastAssignment =
-      incident.assignments[incident.assignments.length - 1];
+    const lastAssignment = incident.assignments[incident.assignments.length - 1];
     nomeDoResponsavel = lastAssignment.assignee?.summary;
   } else if (incident.assignees?.length > 0) {
     nomeDoResponsavel = incident.assignees[0]?.summary;
@@ -37,12 +36,18 @@ export async function updateIncidentMessage(
 
     const stt = TRANSLATE[incidentData.status] || "Em andamento";
 
+
+
+
+
+
+
     if (eventType === "incident.triggered") {
       const assigneeMention = await getAssignedPersonMention(incidentData);
 
       await app.client.chat.update({
         channel: messageRef.channel,
-        ts: messageRef.messageTs,
+         ts: messageRef.messageTs,
         text: `Incidente #${incidentNumber} criado com sucesso!`,
         blocks: [
           {
@@ -64,7 +69,7 @@ export async function updateIncidentMessage(
             fields: [
               {
                 type: "mrkdwn",
-                text: `•   *Prioridade:* \`${incidentData.urgency === "high" ? "Alta" : "Baixa"}\``,
+                text: `•   *Prioridade:* \` ${incidentData.urgency === "high" ? "Alta" : "Baixa"} \``,
               },
               {
                 type: "mrkdwn",
@@ -85,6 +90,13 @@ export async function updateIncidentMessage(
           },
         ],
       });
+
+
+
+
+
+
+
     } else if (eventType === "incident.escalated") {
       const assigneeMention = await getAssignedPersonMention(incidentData);
 
@@ -112,7 +124,7 @@ export async function updateIncidentMessage(
             fields: [
               {
                 type: "mrkdwn",
-                text: `•   *Prioridade:* \`${incidentData.urgency === "high" ? "Alta" : "Baixa"}\``,
+                text: `•   *Prioridade:* \` ${incidentData.urgency === "high" ? "Alta" : "Baixa"} \``,
               },
               {
                 type: "mrkdwn",
@@ -133,10 +145,19 @@ export async function updateIncidentMessage(
           },
         ],
       });
+
+
+
+
+
+
+
+
+
     } else if (eventType === "incident.resolved") {
       // objeto com agent porque no resolved ele vem separado
       const resolvedByMention = await getAssignedPersonMention({
-        agent: agente,
+       agent:agente
       });
 
       await app.client.chat.update({
@@ -163,7 +184,7 @@ export async function updateIncidentMessage(
             fields: [
               {
                 type: "mrkdwn",
-                text: `•   *Prioridade:* \`${incidentData.urgency === "high" ? "Alta" : "Baixa"}\``,
+                text: `•   *Prioridade:* \` ${incidentData.urgency === "high" ? "Alta" : "Baixa"} \``,
               },
               {
                 type: "mrkdwn",

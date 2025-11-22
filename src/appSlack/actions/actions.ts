@@ -8,25 +8,33 @@ import { BlockButtonAction} from "@slack/bolt"
 app.action("cria_incidente_btn", async ({ ack, body, client }) => {
   await ack();
 
+//console.log("teste", JSON.stringify(body, null, 2))
+
   const bodyType = body as BlockButtonAction
 
+
+  const botMessageTs = bodyType.message?.ts;  
   const triggerId = bodyType.trigger_id;
   const channel = bodyType.channel!.id;
  
-  // Pega o JSON que enviamos no value do botão
+
+
+  // Pega o JSON que ta no value do btn
   const value = JSON.parse(bodyType.actions[0].value!);
   const v = value
   const ts = v.ts;
   const thread_ts = v.thread_ts;
   const messageAuthorId = v.messageAuthorId;
-  const placeholderTs = v.placeholderTs;
   const text = v.text || "";
+    
 
-  // abre modal com os parametos do modal.ts
+ 
+
+  // abre modal 
   try {
     await client.views.open({
       trigger_id: triggerId,
-      view: createModal(channel, ts, thread_ts, text, messageAuthorId, placeholderTs),
+      view: createModal(channel, ts, thread_ts, text, messageAuthorId, botMessageTs!  ),
     });
   } catch (error) {
     console.error("Erro ao abrir modal:", error); 

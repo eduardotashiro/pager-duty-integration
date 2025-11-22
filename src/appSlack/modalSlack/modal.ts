@@ -9,8 +9,9 @@ export function createModal(
   thread_ts: string,
   text: string,
   messageAuthorId: string,
-  placeholderTs: string
+   botMessageTs: string
 ): ModalView {
+
   interface ServiceOption {
     text: { type: "plain_text"; text: string };
     value: string;
@@ -98,7 +99,7 @@ export function createModal(
       ts,
       thread_ts,
       messageAuthorId,
-      placeholderTs,
+      botMessageTs,
     }),
     title: { type: "plain_text", text: "Tuna Incidentes 🌵", emoji: true },
     submit: { type: "plain_text", text: "Enviar" },
@@ -246,7 +247,8 @@ app.view(
     const ts = metadata.ts; //  msg específica
     const thread_ts = metadata.thread_ts; //  Thread raiz
     const messageAuthorId = metadata.messageAuthorId;
-    const placeholderTs = metadata.placeholderTs;
+    //const placeholderTs = metadata.placeholderTs;
+    const botMessageTs = metadata.botMessageTs; 
 
     const incident = await createIncident({
       titulo: titulo,
@@ -257,7 +259,7 @@ app.view(
       descricao: descricao,
       urgencia: urgencia,
       channel,
-      ts: ts, //  msg específica
+      ts: ts,                //  msg específica
       thread_ts: thread_ts, //  Thread raiz
     });
 
@@ -267,14 +269,14 @@ app.view(
     console.log(`salvando`);
 
     saveMessageReference(
-      incident.id, // ID do PagerDuty
-      channel, // Canal do Slack
-      placeholderTs, // Timestamp da mensagem do bot
-      messageAuthorId, // Quem criou o incidente
+      incident.id,                 // ID do PagerDuty
+      channel,                    // Canal do Slack
+      botMessageTs ,             // Timestamp da mensagem do bot
+      messageAuthorId,          // Quem criou o incidente
       incident.incident_number // Número do incidente
     );
 
     console.log(`storage atualizado para incidente: ${incident.id}`);
-    console.log(`referencia: ${channel} -> ${placeholderTs}`);
+    console.log(`referencia: ${channel} -> ${botMessageTs}`);
   }
 );
