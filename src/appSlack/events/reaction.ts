@@ -35,62 +35,38 @@ async function searchOriginalMessage(client: any, channel: string, ts: string) {
 app.event("reaction_added", async ({ event, client }) => {
   const e = event as ReactionAddedEvent;
 
-  console.log("REACTION ADDED!");
   console.log("Usuário:", e.user);
   console.log("Emoji:", e.reaction);
   console.log("Mensagem:", e.item);
   console.log("Canal:", e.item.channel)
 
-  if (e.reaction !== "hankey") return
+  if (e.reaction !== "hankey") return;
   incidentCount++; //quando tiver hometab
 
   try {
-    
-    const resultt = await searchOriginalMessage(client,e.item.channel,e.item.ts)
-    const originalMessage = resultt.originalMessage  // msg reagida
-    const threadOrigin = resultt.threadOrigin       // thread raiz
-    const cleanTextnoMention = resultt.text
 
-    // criando a msg sem o value
-    const botMessage = await client.chat.postMessage({
+   // const result = await searchOriginalMessage(client,e.item.channel,e.item.ts)
+
+    
+    const { originalMessage, threadOrigin, text } = await searchOriginalMessage(
+      client,
+      e.item.channel,
+      e.item.ts
+    );
+    
+
+
+    await client.chat.postMessage({
       channel: e.item.channel,
       thread_ts: e.item.ts,
-      text: "Criar incidente. . . ",
+
+      text: "Criando Incidente",
       blocks: [
         {
           type: "section",
           text: {
             type: "mrkdwn",
-            text: `.`,
-          },
-        },
-        {
-          type: "actions",
-          elements: [
-            {
-              type: "button",
-              text: { type: "plain_text", text: " Criar Incidente" },
-              action_id: "cria_incidente_btn",
-              value: "temp", // Valor temporário, que loucura, 3 horas tentando pegar o ts, mas só existe depois de enviar a msg KKKKKK
-              style: "primary",
-            },
-          ],
-        },
-      ],
-    });
-
-    console.log("msg do bot enviada com TS:", botMessage.ts);
-
-    
-    await client.chat.update({
-      channel: e.item.channel,
-      ts: botMessage.ts!,  //atualizando a msg com o value certo, tive que enviar e atualizar, para pegar o ts, n tem como enviar o ts no value, ela só existe dps de enviar a msg 
-      blocks: [
-        {
-          type: "section",
-          text: {
-            type: "mrkdwn",
-            text: `Clique no botão abaixo para iniciar a abertura do incidente no :pagerduty:ager Duty.`, //:pagerduty-seeklogo: - dev  | :pagerduty: - firma
+            text: "Clique no botão abaixo para iniciar a abertura do incidente no :pagerduty:ager Duty.", //:pagerduty-seeklogo: - dev  | :pagerduty: - firma
           },
         },
         {
@@ -100,22 +76,24 @@ app.event("reaction_added", async ({ event, client }) => {
               type: "button",
               text: { type: "plain_text", text: "📋 Criar Incidente" },
               action_id: "cria_incidente_btn",
-              value: JSON.stringify({
-                ts: originalMessage.ts,   //  TIMESTAMP DA MENSAGEM ESPECÍFICA!!!
-                thread_ts: threadOrigin, //   THREAD RAIZ !!!!
-                messageAuthorId: originalMessage.user,
-                placeholderTs: botMessage.ts,
-                text: cleanTextnoMention,
-              }),
               style: "primary", //danger ?
+              value: JSON.stringify({      //temos que passar para string, pois vem como obj
+                ts: originalMessage.ts,    //  TIMESTAMP DA MENSAGEM ESPECÍFICA!!!
+                thread_ts: threadOrigin,  //   THREAD RAIZ !!!!
+                messageAuthorId: originalMessage.user,
+                text // msg que foi reagida
+              }),
             },
           ],
         },
       ],
     });
 
-    console.log("Mensagem do bot atualizada com sucesso!");
+    console.log("primeira msg do bot enviada com sucesso!");
+
   } catch (error) {
-    console.error("Erro ao enviar mensagem:", error);
+
+    console.error("Erro ao enviar a primeira msg do bot:", error);
   }
 });
+
