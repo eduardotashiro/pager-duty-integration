@@ -3,19 +3,27 @@ import { ModalView } from "@slack/types";
 import { createIncident } from "../../appPagerDuty/createIncident/createIncident";
 import { saveMessageReference } from "../storage/messageStorage";
 
+
 export function createModal(
   channel: string,
   ts: string,
   thread_ts: string,
   text: string,
   messageAuthorId: string,
-   botMessageTs: string
+  botMessageTs: string
 ): ModalView {
 
   interface ServiceOption {
     text: { type: "plain_text"; text: string };
     value: string;
   }
+
+  interface image {
+  type:string,
+  image_url:string,
+  alt_text:string
+  }
+
 
   const allServices: ServiceOption[] = [
     {
@@ -59,36 +67,88 @@ export function createModal(
     },
   ];
 
+  const logo1:image[]=[
+    {
+    type: "image",
+    image_url:"https://raw.githubusercontent.com/eduardotashiro/pager-duty-integration/66602aaf6a7c20b06685e248630121ee90b560a0/src/image/logo-anotaai-colored3.png",// "https://i.postimg.cc/zXcwNRLS/logo-anotaai-colored1.png",
+    alt_text: "Anota Aí",
+    }
+  ]
+
+  /*
+  const logo2:image[]=[
+    {
+    type: "image",
+    image_url:"xxxxxx",
+    alt_text: "xxxxxx",
+    }
+  ]
+  
+  const logo3:image[]=[
+    {
+    type: "image",
+    image_url:"xxxxxx",
+    alt_text: "xxxxxx",
+    }
+  ]
+  
+  const logo4:image[]=[
+    {
+    type: "image",
+    image_url:"xxxxxx",
+    alt_text: "xxxxxx",
+    }
+  ]
+  
+  const logo5:image[]=[
+    {
+    type: "image",
+    image_url:"xxxxxx",
+    alt_text: "xxxxxx",
+    }
+  ]
+  */
+
+
   let servicesToShow;
+  let imageToShow;
+
 
   switch (channel) {
-    case "C03KR86CDGX": // C03KR86CDGX   C09E8US58TS
+    case "C09E8US5CNL": // C03KR86CDGX fir   C09E8US5CNL dev
       servicesToShow = allServices;
+      imageToShow = logo1
       break;
 
-    // case "C4C4C4C4":
-    //   servicesToShow = allServices.filter(service => service.value !== "P8RZRP0");
-    //   break;
+     /*
+     case "canal2":
+      servicesToShow = allServices.filter(service => service.value !== "P8RZRP0"); tira service anota ai
+      imageToShow = logo2
+      break;
 
-    // case "C4C4C4C4":
-    //   servicesToShow = allServices.filter(service =>
-    //     service.value === "P9Q80RE" || // Alertas gerais
-    //     service.value === "P5TGWBC"    // Processamento
-    //   );
-    //   break;
+    case "canal3":
+      servicesToShow = allServices.filter(service => service.value !== "P8RZRP0"); tira service anota ai
+      imageToShow = logo3
+      break;
 
-    // case "C4C4C4C4":
-    //   servicesToShow = allServices.filter(service =>
-    //     service.value === "PSKOIES" || // API Interna
-    //     service.value === "PCGAOFE"    // Tokenização
-    //   );
-    //   break;
+      case "canal4":
+      servicesToShow = allServices.filter(service => service.value !== "P8RZRP0"); tira service anota ai
+      imageToShow = logo4
+      break;
+
+      case "canal5":
+      servicesToShow = allServices.filter(service => service.value !== "P8RZRP0"); tira service anota ai
+      imageToShow = logo5
+      break;
+
+      case "canal6":
+      servicesToShow = allServices.filter(service => service.value !== "P8RZRP0"); tira service anota ai
+      imageToShow = logo6
+      break;
 
     default:
-      servicesToShow = allServices.filter(
-        (service) => service.value !== "P9Q80RE"
-      ); //&& service.value !== "P8RZRP0"
-      break;
+      servicesToShow = allServices.filter(service => service.value !== "P9Q80RE"); 
+      break;*/
   }
 
   return {
@@ -133,7 +193,7 @@ export function createModal(
         element: {
           type: "static_select",
           action_id: "servico_input",
-          options: servicesToShow,
+          options: servicesToShow, //ele já espera um array de opções, então da pra passar o array direto sem spread
         },
       },
       {
@@ -169,11 +229,9 @@ export function createModal(
           initial_value: text,
         },
       },
-     {
-  type: "image",
-  image_url:"https://raw.githubusercontent.com/eduardotashiro/pager-duty-integration/66602aaf6a7c20b06685e248630121ee90b560a0/src/image/logo-anotaai-colored3.png",// "https://i.postimg.cc/zXcwNRLS/logo-anotaai-colored1.png",
-  alt_text: "Anota Aí"
-}
+    
+   ...(imageToShow || []), //aqui ele espera o conteudo do array, por isso o spread
+    
       
       //https://www.aconvert.com/pt/image/
 
