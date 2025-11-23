@@ -176,20 +176,20 @@ export async function updateIncidentMessage(
             type: "section",
             text: {
               type: "mrkdwn",
-              text: `<@${messageRef.messageAuthorId}>, informamos que o seu incidente foi resolvido com sucesso!`,
+              text: `<@${messageRef.messageAuthorId}>, incidente resolvido! :white_check_mark:  `, //:check: emoji custom firma
             },
           },
           {
             type: "section",
             fields: [
-              {
+            /*  {
                 type: "mrkdwn",
                 text: `•   *Prioridade:* \` ${incidentData.urgency === "high" ? "Alta" : "Baixa"} \``,
               },
               {
                 type: "mrkdwn",
                 text: `•   *Status:* \` ${stt} \``,
-              },
+              },*/
               {
                 type: "mrkdwn",
                 text: `•   *Responsável:* \` ${resolvedByMention} \``,
