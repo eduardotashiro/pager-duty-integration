@@ -171,7 +171,7 @@ export function createModal(
       },
      {
   type: "image",
-  image_url:"https://i.postimg.cc/tgxGkP6D/logo-anotaai-colored3.png",// "https://i.postimg.cc/zXcwNRLS/logo-anotaai-colored1.png",
+  image_url:"https://raw.githubusercontent.com/eduardotashiro/pager-duty-integration/66602aaf6a7c20b06685e248630121ee90b560a0/src/image/logo-anotaai-colored3.png",// "https://i.postimg.cc/zXcwNRLS/logo-anotaai-colored1.png",
   alt_text: "Anota Aí"
 }
       
