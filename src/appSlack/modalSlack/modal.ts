@@ -62,7 +62,7 @@ export function createModal(
   let servicesToShow;
 
   switch (channel) {
-    case "C09E8US5CNL": // C03KR86CDGX   C09E8US58TS
+    case "C03KR86CDGX": // C03KR86CDGX   C09E8US58TS
       servicesToShow = allServices;
       break;
 
@@ -111,7 +111,7 @@ export function createModal(
         label: { type: "plain_text", text: "Título" },
         hint: {
           type: "plain_text",
-          text: "Assunto do incidente.",
+          text: "Assunto do incidente",
         },
         element: {
           type: "plain_text_input",
@@ -128,7 +128,7 @@ export function createModal(
         label: { type: "plain_text", text: "Serviço" },
         hint: {
           type: "plain_text",
-          text: "Selecione o serviço relacionado ao incidente.",
+          text: "Selecione o serviço relacionado ao incidente",
         },
         element: {
           type: "static_select",
@@ -171,7 +171,7 @@ export function createModal(
       },
      {
   type: "image",
-  image_url: "https://raw.githubusercontent.com/eduardotashiro/pager-duty-integration/74fac7220c9aec40b6418278ebd61af3a04c5fe0/src/image/logo-anotaai-colored.png",
+  image_url:"https://i.postimg.cc/tgxGkP6D/logo-anotaai-colored3.png",// "https://i.postimg.cc/zXcwNRLS/logo-anotaai-colored1.png",
   alt_text: "Anota Aí"
 }
       
