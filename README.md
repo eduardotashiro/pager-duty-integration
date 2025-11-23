@@ -1,7 +1,14 @@
-## Criação de incidentes Pager duty
+# Create incidents in PagerDuty with a reaction
+![PagerDuty Badge](https://img.shields.io/badge/PagerDuty-Integration-blue?style=for-the-badge&logo=pagerduty&logoColor=white)
+![PagerDuty Badge](https://img.shields.io/badge/PagerDuty-Integration-blue?style=for-the-badge&logo=pagerduty&logoColor=white)
+![PagerDuty Badge](https://img.shields.io/badge/PagerDuty-Integration-blue?style=for-the-badge&logo=pagerduty&logoColor=white)
+![PagerDuty Badge](https://img.shields.io/badge/PagerDuty-Integration-blue?style=for-the-badge&logo=pagerduty&logoColor=white)
 
-> em desenvolvimento... Andando bem… no desespero, mas andando
 
+
+
+
+![PagerDuty](https://i.postimg.cc/NFwjkqx8/pagerlogo.png)   
 ```
 ├── src
 │   ├── appPagerDuty
@@ -22,7 +29,9 @@
 │   │       ├── messageStorage.ts
 │   │       └── redis.ts
 │   ├── image
-│   │   └── pagerduty-seeklogo.png
+│   │   ├── logo-anotaai-colored3.png
+│   │   ├── pagerduty-seeklogo.png
+│   │   └── pagerlogo.png
 │   ├── app.ts
 │   └── server.ts
 ├── .gitignore
@@ -33,8 +42,6 @@
 └── tsconfig.json
 ```
 ```
-
-
 
                        .,,uod8B8bou,,.                             
               ..,uod8BBBBBBBBBBBBBBBBRPFT?l!i:.                    
@@ -65,6 +72,5 @@
                 `!!8888888888888888899fT|!^"'                      
                   `!988888888899fT|!^"'                            
                     `!9899fT|!^"'                                  
-
 
 ```
