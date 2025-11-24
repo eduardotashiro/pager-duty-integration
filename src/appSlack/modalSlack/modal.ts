@@ -145,10 +145,10 @@ export function createModal(
       servicesToShow = allServices.filter(service => service.value !== "P8RZRP0"); tira service anota ai
       imageToShow = logo6
       break;
-
+*/
     default:
       servicesToShow = allServices.filter(service => service.value !== "P9Q80RE"); 
-      break;*/
+      break;
   }
 
   return {
