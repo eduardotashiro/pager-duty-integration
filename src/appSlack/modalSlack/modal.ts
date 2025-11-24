@@ -145,7 +145,7 @@ let imageToShow;
       messageAuthorId,
       botMessageTs,
     }),
-    title: { type: "plain_text", text: "Tuna Incidentes 🌵", emoji: true },
+    title: { type: "plain_text", text: "Tuna Incidentes", emoji: true },
     submit: { type: "plain_text", text: "Enviar" },
     close: { type: "plain_text", text: "Cancelar" },
     blocks: [
