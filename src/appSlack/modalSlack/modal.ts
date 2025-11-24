@@ -67,7 +67,7 @@ export function createModal(
     },
   ];
 
-  const logo1:image[]=[
+  const logo1:image[]=[ 
     {
     type: "image",
     image_url:"https://raw.githubusercontent.com/eduardotashiro/pager-duty-integration/66602aaf6a7c20b06685e248630121ee90b560a0/src/image/logo-anotaai-colored3.png",// "https://i.postimg.cc/zXcwNRLS/logo-anotaai-colored1.png",
@@ -75,39 +75,15 @@ export function createModal(
     }
   ]
 
-  /*
+ 
   const logo2:image[]=[
     {
     type: "image",
-    image_url:"xxxxxx",
-    alt_text: "xxxxxx",
+    image_url:"https://raw.githubusercontent.com/eduardotashiro/pager-duty-integration/ff24c8a237d6a66a8992ed206f137c9c97e7941c/src/image/click-bus-logo-colored.png",
+    alt_text: "Click Bus",
     }
   ]
-  
-  const logo3:image[]=[
-    {
-    type: "image",
-    image_url:"xxxxxx",
-    alt_text: "xxxxxx",
-    }
-  ]
-  
-  const logo4:image[]=[
-    {
-    type: "image",
-    image_url:"xxxxxx",
-    alt_text: "xxxxxx",
-    }
-  ]
-  
-  const logo5:image[]=[
-    {
-    type: "image",
-    image_url:"xxxxxx",
-    alt_text: "xxxxxx",
-    }
-  ]
-  */
+ 
 
 
   let servicesToShow;
@@ -115,22 +91,23 @@ export function createModal(
 
 
   switch (channel) {
-    case "C03KR86CDGX": // C03KR86CDGX fir   C09E8US5CNL dev
-      servicesToShow = allServices;
-      imageToShow = logo1
-      break;
-
-     /*
-     case "canal2":
-      servicesToShow = allServices.filter(service => service.value !== "P8RZRP0"); tira service anota ai
+    case "C03KR86CDGX":   
+      //servicesToShow = allServices;
+      servicesToShow = allServices.filter(service => service.value !== "P0FM6TC"); 
       imageToShow = logo2
       break;
 
-    case "canal3":
-      servicesToShow = allServices.filter(service => service.value !== "P8RZRP0"); tira service anota ai
-      imageToShow = logo3
+    
+     case "C06AGHQRZUN":
+      servicesToShow = allServices.filter(service => service.value !== "P0FM6TC"); 
+      imageToShow = logo2
       break;
-
+ 
+    case "C078H30SYC9":
+      servicesToShow = allServices.filter(service => service.value !== "P0FM6TC"); 
+      imageToShow = logo2
+      break;
+/*
       case "canal4":
       servicesToShow = allServices.filter(service => service.value !== "P8RZRP0"); tira service anota ai
       imageToShow = logo4
