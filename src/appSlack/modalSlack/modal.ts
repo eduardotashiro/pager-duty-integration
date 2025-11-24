@@ -79,11 +79,18 @@ export function createModal(
   const logo2:image[]=[
     {
     type: "image",
-    image_url:"https://raw.githubusercontent.com/eduardotashiro/pager-duty-integration/ff24c8a237d6a66a8992ed206f137c9c97e7941c/src/image/click-bus-logo-colored.png",
+    image_url:"https://raw.githubusercontent.com/eduardotashiro/pager-duty-integration/22ad9a77c22441e2eeb26ce4d83012876a2760d1/src/image/click-bus-logo-colored.png",
     alt_text: "Click Bus",
     }
   ]
  
+  const logo3:image[]=[
+    {
+    type: "image",
+    image_url:"https://github.com/eduardotashiro/pager-duty-integration/blob/main/src/image/tuna.png?raw=true",
+    alt_text: "Tuna",
+    }
+  ]
 
 
   let servicesToShow;
@@ -92,13 +99,11 @@ export function createModal(
 
   switch (channel) {
     case "C03KR86CDGX":   
-      //servicesToShow = allServices;
-      servicesToShow = allServices.filter(service => service.value !== "P0FM6TC"); 
-      imageToShow = logo2
+      servicesToShow = allServices;
+      imageToShow = logo3
       break;
-
     
-     case "C06AGHQRZUN":
+    case "C06AGHQRZUN":
       servicesToShow = allServices.filter(service => service.value !== "P0FM6TC"); 
       imageToShow = logo2
       break;
@@ -125,6 +130,7 @@ export function createModal(
 */
     default:
       servicesToShow = allServices.filter(service => service.value !== "P0FM6TC"); 
+      imageToShow = logo3
       break;
   }
 
