@@ -31,39 +31,39 @@ export function createModal(
         type: "plain_text",
         text: "Plataforma Anota Aí  →  Alertas da plataforma",
       }, //Anota Aí
-      value: "P9Q80RE",
+      value: "P0FM6TC",   //   P9Q80RE dev
     },
     {
       text: {
         type: "plain_text",
         text: "Console Tuna API  →  Processos internos do Console",
       }, //Console API
-      value: "PSKOIES",
+      value: "PHE9XE9",  //  PSKOIES dev
     },
     {
       text: { type: "plain_text", text: "Console Tuna  →  Interface web" }, //Console Web
-      value: "PJAHA64",
+      value: "PE4LX1J",  //  PJAHA64 dev
     },
     {
       text: {
         type: "plain_text",
         text: "Tuna Core API  →  Processamento de pagamentos",
       }, //Engine API
-      value: "P5TGWBC",
+      value: "P3J42TT",  //  P5TGWBC dev
     },
     {
       text: {
         type: "plain_text",
         text: "Notificações  →  Comunicação com provedores",
-      }, //Notifications
-      value: "P8RZRP0",
+      }, //Notifications  
+      value: "PBJ911Y",  //  P8RZRP0 dev
     },
     {
       text: {
         type: "plain_text",
         text: "Tokenização  →  Token de cartão de crédito",
       }, //Token API
-      value: "PCGAOFE",
+      value: "P63ZYIF", //  PCGAOFE dev
     },
   ];
 
