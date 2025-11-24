@@ -40,7 +40,7 @@ app.event("reaction_added", async ({ event, client }) => {
   console.log("Mensagem:", e.item);
   console.log("Canal:", e.item.channel)
 
-  if (e.reaction !== "hankey") return;
+  if (e.reaction !== "pagerduty-1") return;
   incidentCount++; //quando tiver hometab
 
   try {

@@ -115,7 +115,7 @@ export function createModal(
 
 
   switch (channel) {
-    case "C09E8US5CNL": // C03KR86CDGX fir   C09E8US5CNL dev
+    case "C03KR86CDGX": // C03KR86CDGX fir   C09E8US5CNL dev
       servicesToShow = allServices;
       imageToShow = logo1
       break;
