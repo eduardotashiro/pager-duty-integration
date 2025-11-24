@@ -4,9 +4,22 @@
 
 ![PagerDuty](https://i.postimg.cc/NFwjkqx8/pagerlogo.png) 
 
----
----
----
+***PagerDuty x Slack Integration***
+
+A small Node.js + Slack Bolt application that creates PagerDuty incidents directly from Slack reactions and updates Slack messages based on PagerDuty webhook events.
+
+***Features***
+
+- Trigger PagerDuty incidents from Slack by reacting with a specific emoji
+
+- Opens a Slack modal to collect incident details
+
+- Creates incidents via PagerDuty REST API
+
+- Stores message references using Redis
+
+- Updates Slack messages on incident events (triggered, escalated, resolved)
+
 ---
 
 ```
