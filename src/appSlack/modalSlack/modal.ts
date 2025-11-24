@@ -17,13 +17,13 @@ export function createModal(
     text: { type: "plain_text"; text: string };
     value: string;
   }
-
+/*
   interface image {
   type:string,
   image_url:string,
   alt_text:string
   }
-
+*/
 
   const allServices: ServiceOption[] = [
     {
@@ -66,7 +66,7 @@ export function createModal(
       value: "P63ZYIF", //  PCGAOFE dev
     },
   ];
-
+/*
   const logo1:image[]=[ 
     {
     type: "image",
@@ -92,25 +92,26 @@ export function createModal(
     }
   ]
 
-
+let imageToShow;
+*/
   let servicesToShow;
-  let imageToShow;
+  
 
 
   switch (channel) {
     case "C03KR86CDGX":   
       servicesToShow = allServices;
-      imageToShow = logo2
+      //imageToShow = logo2
       break;
     
     case "C06AGHQRZUN":
       servicesToShow = allServices.filter(service => service.value !== "P0FM6TC"); 
-      imageToShow = logo2
+      //imageToShow = logo2
       break;
  
     case "C078H30SYC9":
       servicesToShow = allServices.filter(service => service.value !== "P0FM6TC"); 
-      imageToShow = logo2
+     // imageToShow = logo2
       break;
 /*
       case "canal4":
@@ -130,7 +131,7 @@ export function createModal(
 */
     default:
       servicesToShow = allServices.filter(service => service.value !== "P0FM6TC"); 
-      imageToShow = logo3
+      //imageToShow = logo3
       break;
   }
 
@@ -213,7 +214,7 @@ export function createModal(
         },
       },
     
-   ...(imageToShow || []), //aqui ele espera o conteudo do array, por isso o spread
+   //...(imageToShow || []), //aqui ele espera o conteudo do array, por isso o spread
     
       
       //https://www.aconvert.com/pt/image/
