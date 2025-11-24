@@ -100,7 +100,7 @@ export function createModal(
   switch (channel) {
     case "C03KR86CDGX":   
       servicesToShow = allServices;
-      imageToShow = logo3
+      imageToShow = logo2
       break;
     
     case "C06AGHQRZUN":
