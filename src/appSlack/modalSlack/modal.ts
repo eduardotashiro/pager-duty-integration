@@ -113,12 +113,12 @@ let imageToShow;
       servicesToShow = allServices.filter(service => service.value !== "P0FM6TC"); 
      // imageToShow = logo2
       break;
-/*
-      case "canal4":
-      servicesToShow = allServices.filter(service => service.value !== "P8RZRP0"); tira service anota ai
-      imageToShow = logo4
-      break;
 
+      case "C05D0V00GSC":
+      servicesToShow = allServices
+    
+      break;
+/*
       case "canal5":
       servicesToShow = allServices.filter(service => service.value !== "P8RZRP0"); tira service anota ai
       imageToShow = logo5
